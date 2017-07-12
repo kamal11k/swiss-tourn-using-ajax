@@ -1,11 +1,14 @@
-/*form {
-    border: 3px solid #f1f1f1;
-}*/
-/*body {
-    background-color: #6f4f69;
-}*/
 
-input[type=text], input[type=password] {
+input[class=input_tour], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.index {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -16,6 +19,15 @@ input[type=text], input[type=password] {
 input[class=hidden] {
     display: none;
 }
+.indexButton {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
 header {
     text-align: center;
     color: #c30a4b;
@@ -25,8 +37,11 @@ header {
 section {
     margin-bottom: 50px;
 }
+.input-group-btn {
+    margin-top: 20px;
+}
 
-button {
+button[class=createTour] {
     background-color: #4CAF50;
     color: white;
     padding: 14px 20px;
@@ -34,6 +49,20 @@ button {
     border: none;
     cursor: pointer;
     width: 100%;
+}
+
+li {
+    background-color: #ab4d91;
+    color: white;
+    padding: 5px 5px;
+    margin: 8px 10px;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
 }
 
 button[class=logout] {
@@ -77,9 +106,18 @@ input[class=player] {
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
+
+input[name=p_name]{
+    width: 75%;
+    margin-left: 30px;
+}
 .login {
     margin-left: 400px;
     width: 550px;
+    color: white;
+    background-color: #9a618d;
+    height: 40px;
+    font-size: 15px;
 }
 
 button:hover {

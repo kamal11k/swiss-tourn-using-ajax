@@ -125,9 +125,36 @@ app.get('/viewTournament',checkSignIn,function(req,res,next){
 })
 
 app.get('/individualTournament/:t_id',checkSignIn,function(req,res,next){
-    var tournament_id = req.params.t_id;
-    req.session.t_id = tournament_id;
-    console.log(req.session)
+    req.session.t_id = req.params.t_id;
+    tournament_id = req.session.t_id;
+    var user_id = req.session.user_id;
+    swiss.seePlayers(tournament_id,function(error,data){
+        if(error)
+            res.end('No players present');
+        else{
+            swiss.existingPlayers(user_id,tournament_id,function(error,results){
+                    if(error){
+                        res.end('error')
+                    }
+                    else{
+                        swiss.playerStandings(tournament_id,function(error,result){
+                            if(error)
+                                res.end('Error');
+                            else{
+                                //res.json(data);
+                                res.render('tournament.hbs',{
+                                                            "players":data,
+                                                            "ex_players":results,
+                                                            "standing":result
+                                                            })
+                            }
+
+                        })
+                    }
+            })
+        }
+
+    })
     //res.render('tournamentMenu.ejs',{"t_id":tournament_id})
 })
 

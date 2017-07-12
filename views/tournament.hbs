@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="http://localhost:8000/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<header class=" row">
+        <div class="col-md-4">
+            <h2>Tournament Name: </h1>
+        </div>
+        <div class="col-md-4">
+            <h2>Status: </h1>
+        </div>
+        <div class="col-md-4 input-group-btn">
+            <button class="btn btn-warning" type="submit">START</button>
+        </div>
+</header>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="row">
+            <input type="text" name="p_name">
+            <button type="submit" class="btn btn-primary ">Add Player</button>
+        </div>
+        <div class="row ">
+            <div class="col-md-6 Players">
+            {{#each players}}
+                <li>{{name}}</li>
+            {{/each}}
+            </div>
+            <div class="col-md-6 existings">
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <table class="table table-striped">
+            <thead class="thead-inverse">
+                <tr class="danger">
+                    <th>Name</th>
+                    <th>Matches</th>
+                    <th>Wins</th>
+                    <th>Losses</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each standing}}
+                    <tr>
+                        <th>{{Name}}</th>
+                        <td>{{Matches}}</td>
+                        <td>{{Wins}}</td>
+                        <td>{{Losses}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/javascript/app.js"></script>
+</body>
+</html>
