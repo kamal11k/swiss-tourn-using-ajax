@@ -7,10 +7,10 @@
 <body>
 <header class=" row">
         <div class="col-md-4">
-            <h2>Tournament Name: </h1>
+            <h2>Tournament Name:  {{tournament.name}}</h1>
         </div>
         <div class="col-md-4">
-            <h2>Status: </h1>
+            <h2>Status:  {{tournament.status}} </h1>
         </div>
         <div class="col-md-4 input-group-btn">
             <button class="btn btn-warning" type="submit">START</button>
@@ -30,7 +30,13 @@
             {{/each}}
             </div>
             <div class="col-md-6 existings">
-
+                <label><h4>Existing Players</h4></label>
+                <select id="tick1" class="selectpicker">
+                    {{#each ex_players}}
+                        <option>{{name}}</option>
+                    {{/each}}
+                </select>
+                <button type="submit" class="btn btn-primary ">Add here</button>
             </div>
         </div>
     </div>

@@ -19,6 +19,9 @@ input[class=input_tour], input[type=password] {
 input[class=hidden] {
     display: none;
 }
+h4 {
+    color: #034175;
+}
 .indexButton {
     background-color: #4CAF50;
     color: white;
@@ -84,18 +87,6 @@ button[class=logout] {
     /*top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);*/
-}
-
-button[class=player]{
-    background-color: #2a26bb;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: 2px;
-    font-size: 15px;
-    box-shadow: 5px 5px 2px rgba(136, 136, 136, 0.75);
-    cursor: pointer;
-    width: 10%;
 }
 
 input[class=player] {

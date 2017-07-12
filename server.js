@@ -141,12 +141,19 @@ app.get('/individualTournament/:t_id',checkSignIn,function(req,res,next){
                             if(error)
                                 res.end('Error');
                             else{
-                                //res.json(data);
-                                res.render('tournament.hbs',{
+                                swiss.getTournament(tournament_id,function(error,t){
+                                    if(error){
+
+                                    }
+                                    else {
+                                        res.render('tournament.hbs',{
+                                                            "tournament":t,
                                                             "players":data,
                                                             "ex_players":results,
                                                             "standing":result
                                                             })
+                                    }
+                                })
                             }
 
                         })
@@ -159,7 +166,7 @@ app.get('/individualTournament/:t_id',checkSignIn,function(req,res,next){
 })
 
 app.post('/add_player',checkSignIn,function(req,res,next){
-    var tournament_id = req.body.t_id;
+    var tournament_id = req.session.t_id;
     var user_id = req.session.user_id;
     swiss.isMatchStarted(tournament_id,function(error,isStarted){
         if(error){
