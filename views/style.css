@@ -1,0 +1,102 @@
+/*form {
+    border: 3px solid #f1f1f1;
+}*/
+/*body {
+    background-color: #6f4f69;
+}*/
+
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+input[class=hidden] {
+    display: none;
+}
+header {
+    text-align: center;
+    color: #c30a4b;
+    margin-bottom: 50px;
+}
+
+section {
+    margin-bottom: 50px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+button[class=logout] {
+    background-color: #d23636;
+    color: white;
+    float: right;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100px;
+}
+
+.fixture {
+
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    /*top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);*/
+}
+
+button[class=player]{
+    background-color: #2a26bb;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: 2px;
+    font-size: 15px;
+    box-shadow: 5px 5px 2px rgba(136, 136, 136, 0.75);
+    cursor: pointer;
+    width: 10%;
+}
+
+input[class=player] {
+    width: 50%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+.login {
+    margin-left: 400px;
+    width: 550px;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+
+.container {
+    padding-left: 400px;
+    padding-right: 400px;
+    padding-top: 100px;
+}
+
+
+
+span.psw {
+    float: right;
+    padding-top: 16px;
+}
+

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<header >
+    <h1>Welcome to Swiss Tournament</h1>
+</header>
+<section class="row">
+  <div class="col-lg-offset-3 col-lg-6">
+        <div class="form-group">
+            <input type="text" class="form-control input_tour" placeholder="Enter Tournament Name" name="t_name">
+            <span class="input-group-btn">
+                <button  class="btn btn-success createTour" type="submit">Create</button>
+            </span>
+        </div>
+  </div>
+</section>
+<div class="col-lg-offset-1 col-lg-10">
+<table class="table table-striped">
+  <thead>
+    <tr class="danger">
+      <th>Name</th>
+      <th>Status</th>
+      <th>Winner</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each data}}
+        <tr>
+            <th><a class="tour" href="/individualTournament/{{id}}">{{name}}</th></a>
+            <td>{{status}}</td>
+            <td>{{winner}}</td>
+        </tr>
+    {{/each}}
+  </tbody>
+</table>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/javascript/app.js"></script>
+</body>
+</html>

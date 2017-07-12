@@ -1,0 +1,22 @@
+{
+  "name": "node102",
+  "version": "1.0.0",
+  "description": "My initial node code",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.3",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.3",
+    "morgan": "^1.8.2",
+    "mysql": "^2.13.0",
+    "yargs": "^8.0.2"
+  }
+}
