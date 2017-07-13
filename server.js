@@ -41,7 +41,7 @@ app.post('/addnewPlayer',checkSignIn,function(req,res,next){
         }
         else {
             if (typeof isStarted != 'undefined'){
-                res.end("Can't add player once the match has started");
+                res.json({"msg":false});
             }
             else {
                 swiss.registerNewPlayer(user_id,tournament_id,player_name,function(error,x){
@@ -283,6 +283,22 @@ app.post('/ExecuteRound',checkSignIn,function(req,res,next){
     })
 })
 
+app.post('/reportMatch',checkSignIn,function(req,res,result){
+    var t_id = req.session.t_id;
+    var roundInfo = req.body.roundDetails;
+    roundInfo.forEach(function(match){
+        swiss.reportMatch(t_id,match.round,match.winner_id,match.loser_id,function(error,res){
+            if(error){
+                // res.json({"msg":"error"})
+            }
+            else {
+                //res.json({"msg":})
+            }
+        })
+    })
+
+})
+
 app.get('/Start',checkSignIn,function(req,res,next){
     var tournament_id = req.session.t_id;
     swiss.countPlayers(tournament_id,function(error,count){
@@ -312,14 +328,14 @@ app.get('/showStanding',checkSignIn,function(req,res,next){
     })
 });
 
-app.get('/getFixture',checkSignIn,function(req,res,next){
+app.get('/getFixture/:round',checkSignIn,function(req,res,next){
     var tournament_id = req.session.t_id;
+    var round = req.params.round;
     swiss.swissPairings(tournament_id,function(error,data){
         if(error)
             res.end('Error');
         else{
-            console.log(data)
-            res.json(data);
+            res.json({"pairs":data,"round":round});
         }
 
     })
