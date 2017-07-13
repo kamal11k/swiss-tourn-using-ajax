@@ -6,10 +6,10 @@
 </head>
 <body>
 <header class=" row">
-        <div class="col-md-4">
+        <div class="col-md-4 tour_name">
             <h2>Tournament Name:  {{tournament.name}}</h1>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 tour_status">
             <h2>Status:  {{tournament.status}} </h1>
         </div>
         <div class="col-md-4 input-group-btn">
@@ -20,8 +20,8 @@
 <div class="row">
     <div class="col-md-6">
         <div class="row">
-            <input type="text" name="p_name">
-            <button type="submit" class="btn btn-primary ">Add Player</button>
+            <input class="inputPname" placeholder="Enter Player Name" type="text" name="p_name">
+            <button type="submit" class="btn btn-primary btn_addPlayer">Add Player</button>
         </div>
         <div class="row ">
             <div class="col-md-6 Players">
@@ -36,7 +36,7 @@
                         <option>{{name}}</option>
                     {{/each}}
                 </select>
-                <button type="submit" class="btn btn-primary ">Add here</button>
+                <button type="submit" class="btn btn-primary btn_addExPlayer">Add here</button>
             </div>
         </div>
     </div>
@@ -50,7 +50,7 @@
                     <th>Losses</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="standing">
                 {{#each standing}}
                     <tr>
                         <th>{{Name}}</th>
@@ -59,6 +59,23 @@
                         <td>{{Losses}}</td>
                     </tr>
                 {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row round_table">
+    <div class="col-md-12">
+        <table class="table table-striped ">
+            <thead>
+                <tr class="bg-primary">
+                    <th>Round</th>
+                    <th>Status</th>
+                    <th>Result</th>
+                    <th>Play</th>
+                    <th>Pairings</th>
+                </tr>
+            </thead>
+            <tbody class='round'>
             </tbody>
         </table>
     </div>

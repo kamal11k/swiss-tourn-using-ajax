@@ -32,30 +32,56 @@ app.use(session({   secret: 'winter is coming' ,
 
 
 app.post('/addnewPlayer',checkSignIn,function(req,res,next){
-    var tournament_id = req.body.t_id;
+    var tournament_id = req.session.t_id;
     var player_name = req.body.p_name;
     var user_id = req.session.user_id;
-    swiss.registerNewPlayer(user_id,tournament_id,player_name,function(error,x){
+    swiss.isMatchStarted(tournament_id,function(error,isStarted){
         if(error){
-            res.end('Registration failure');
+            res.end('error')
         }
-        else{
-            //res.end('Player registered successfully!!');
-            res.render('addPlayer.ejs',{"t_id":tournament_id,"data":x});
+        else {
+            if (typeof isStarted != 'undefined'){
+                res.end("Can't add player once the match has started");
+            }
+            else {
+                swiss.registerNewPlayer(user_id,tournament_id,player_name,function(error,x){
+                    if(error){
+                        res.end('Registration failure');
+                    }
+                    else{
+                        //res.end('Player registered successfully!!');
+                        res.json({"data":x});
+                    }
+                })
+            }
         }
     })
 })
 
 app.post('/addExistingPlayer',checkSignIn,function(req,res,next){
-    var tournament_id = req.body.t_id;
+    var tournament_id = req.session.t_id;
     var player_name = req.body.p_name;
     var user_id = req.session.user_id;
-    swiss.registerExistingPlayer(user_id,tournament_id,player_name,function(error,x){
-        if(error)
-            res.end('Registration failure');
-        else
-            //res.end('Player registered successfully!!');
-            res.render('addPlayer.ejs',{"t_id":tournament_id,"data":x});
+    swiss.isMatchStarted(tournament_id,function(error,isStarted){
+        if(error){
+            res.end('error')
+        }
+        else {
+            if (typeof isStarted != 'undefined'){
+                res.end("Can't add player once the match has started");
+            }
+            else {
+                swiss.registerExistingPlayer(user_id,tournament_id,player_name,function(error,x){
+                    if(error){
+                        res.end('Registration failure');
+                    }
+                    else{
+                        //res.end('Player registered successfully!!');
+                        res.json({"data":x});
+                    }
+                })
+            }
+        }
     })
 })
 
@@ -112,13 +138,12 @@ app.post('/createTournament',checkSignIn,function(req,res,next){
 
 app.get('/viewTournament',checkSignIn,function(req,res,next){
     var user_id = req.session.user_id;
-    swiss.viewTournament(user_id,function(error,x){
+    swiss.viewTournament(user_id,function(error,tournaments){
         if(error)
             res.end('Unsuccessfull');
         else{
-            console.log(x);
             res.render('createTournament.hbs',{
-                "data":x
+                "data":tournaments
             });
         }
     })
@@ -133,31 +158,27 @@ app.get('/individualTournament/:t_id',checkSignIn,function(req,res,next){
             res.end('No players present');
         else{
             swiss.existingPlayers(user_id,tournament_id,function(error,results){
-                    if(error){
-                        res.end('error')
-                    }
-                    else{
-                        swiss.playerStandings(tournament_id,function(error,result){
-                            if(error)
-                                res.end('Error');
-                            else{
-                                swiss.getTournament(tournament_id,function(error,t){
-                                    if(error){
-
-                                    }
-                                    else {
-                                        res.render('tournament.hbs',{
-                                                            "tournament":t,
+                if(error){
+                    res.end('error')
+                }
+                else{
+                    swiss.playerStandings(tournament_id,function(error,result){
+                        if(error)
+                            res.end('Error');
+                        else{
+                            swiss.getTournament(tournament_id,function(error,tour){
+                                //res.json(data);
+                                res.render('tournament.hbs',{
+                                                            "tournament":tour,
                                                             "players":data,
                                                             "ex_players":results,
                                                             "standing":result
                                                             })
-                                    }
-                                })
-                            }
+                            })
+                        }
 
-                        })
-                    }
+                    })
+                }
             })
         }
 
@@ -166,7 +187,7 @@ app.get('/individualTournament/:t_id',checkSignIn,function(req,res,next){
 })
 
 app.post('/add_player',checkSignIn,function(req,res,next){
-    var tournament_id = req.session.t_id;
+    var tournament_id = req.body.t_id;
     var user_id = req.session.user_id;
     swiss.isMatchStarted(tournament_id,function(error,isStarted){
         if(error){
@@ -279,14 +300,13 @@ app.post('/Execute',checkSignIn,function(req,res,next){
     })
 });
 
-app.post('/showStanding',checkSignIn,function(req,res,next){
-    var tournament_id = req.body.t_id;
+app.get('/showStanding',checkSignIn,function(req,res,next){
+    var tournament_id = req.session.t_id;
     swiss.playerStandings(tournament_id,function(error,data){
         if(error)
             res.end('Error');
         else{
-            //res.json(data);
-            res.render('showStanding.ejs',{'data':data})
+            res.json(data);
         }
 
     })
