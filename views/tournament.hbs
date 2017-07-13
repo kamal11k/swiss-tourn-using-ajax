@@ -7,20 +7,20 @@
 <body>
 <header class=" row">
         <div class="col-md-4 tour_name">
-            <h2>Tournament Name:  {{tournament.name}}</h1>
+            <h2>Tournament Name:  {{tournament.name}}</h2>
         </div>
         <div class="col-md-4 tour_status">
-            <h2>Status:  {{tournament.status}} </h1>
+            <h2>Status:  {{tournament.status}} </h2>
         </div>
         <div class="col-md-4 input-group-btn">
-            <button class="btn btn-warning" type="submit">START</button>
+            <button class="btn btn-warning btn_start" type="submit">START</button>
         </div>
 </header>
 
 <div class="row">
     <div class="col-md-6">
         <div class="row">
-            <input class="inputPname" placeholder="Enter Player Name" type="text" name="p_name">
+            <input class="inputPname" placeholder="Enter Player Name" type="text" name="p_name" required>
             <button type="submit" class="btn btn-primary btn_addPlayer">Add Player</button>
         </div>
         <div class="row ">
@@ -36,7 +36,7 @@
                         <option>{{name}}</option>
                     {{/each}}
                 </select>
-                <button type="submit" class="btn btn-primary btn_addExPlayer">Add here</button>
+                <button type="submit" class="btn btn-primary btn-primary :hover btn_addExPlayer">Add here</button>
             </div>
         </div>
     </div>
@@ -66,18 +66,70 @@
 <div class="row round_table">
     <div class="col-md-12">
         <table class="table table-striped ">
-            <thead>
-                <tr class="bg-primary">
+            <thead >
+                <tr class="danger">
                     <th>Round</th>
                     <th>Status</th>
-                    <th>Result</th>
-                    <th>Play</th>
-                    <th>Pairings</th>
+                    <th>Execute</th>
+                    <th>Winner</th>
                 </tr>
             </thead>
             <tbody class='round'>
             </tbody>
         </table>
+    </div>
+</div>
+
+<!-- <button type="button" class="btn btn-primary" id="kamal">
+  Launch demo modal
+</button> -->
+<!--testingaaaaaaaaaaaaaaaaaaaaaaaaaaa-->
+<!-- <div class="col-lg-offset-1 col-lg-10">
+    <table class="table table-striped">
+        <thead>
+            <tr class="success">
+              <th>Player1</th>
+              <th>Player2</th>
+              <th>Winner</th>
+            </tr>
+        </thead>
+        <tbody class="testing">
+
+        </tbody>
+    </table>
+</div>
+ -->
+<!-- Modal -->
+<div class="modal fade" id="round_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Fixtures</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-offset-1 col-lg-10">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="success">
+                              <th>Player1</th>
+                              <th>Player2</th>
+                              <th>Winner</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mt_body">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

@@ -283,18 +283,18 @@ app.post('/ExecuteRound',checkSignIn,function(req,res,next){
     })
 })
 
-app.post('/Execute',checkSignIn,function(req,res,next){
-    var tournament_id = req.body.t_id;
+app.get('/Start',checkSignIn,function(req,res,next){
+    var tournament_id = req.session.t_id;
     swiss.countPlayers(tournament_id,function(error,count){
         if(error){
             res.end(error)
         }
         else {
             if(!(count&&(count & (count - 1)) === 0)){
-                res.end('No of players should be power of 2.  example- 2, 4, 8, 16 etc');
+                res.json({"msg":'No. of players should be power of 2.  example- 2, 4, 8, 16 etc'});
             }
             else {
-                res.render('executeRound.ejs',{"t_id":tournament_id});
+                res.json({"count":count,"msg":false})
             }
         }
     })
@@ -312,14 +312,14 @@ app.get('/showStanding',checkSignIn,function(req,res,next){
     })
 });
 
-app.post('/getFixture',checkSignIn,function(req,res,next){
-    var tournament_id = req.body.t_id;
+app.get('/getFixture',checkSignIn,function(req,res,next){
+    var tournament_id = req.session.t_id;
     swiss.swissPairings(tournament_id,function(error,data){
         if(error)
             res.end('Error');
         else{
-            //res.json(data);
-            res.render('getFixture.ejs',{'data':data})
+            console.log(data)
+            res.json(data);
         }
 
     })
