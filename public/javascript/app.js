@@ -1,5 +1,4 @@
 
-
 $(function(){
     var $createTour = $('.createTour');
     var $btn_addPlayer = $('.btn_addPlayer');
@@ -11,12 +10,17 @@ $(function(){
     var $singleRound_modal = $('#singleRound_modal');
 
 
+
     function existingPlayers(Players){
         //console.log(Players)
         $('.selectpicker').html('')
         Players.forEach(function(player){
             $('.selectpicker').append("<option>"+player.name+"</option>")
         })
+    }
+
+    function disableButtons(t_id){
+
     }
 
     function playerStanding(){
@@ -62,7 +66,7 @@ $(function(){
             url: '/addnewPlayer',
             data : data,
             success:function(data){
-                if(!data.msg){
+                if(data.msg){
                     alert("Can't add once match started")
                 }
                 else {
@@ -85,7 +89,7 @@ $(function(){
             url: '/addExistingPlayer',
             data : data,
             success:function(data){
-                if(!data.msg){
+                if(data.msg){
                     alert("Can't add once match started")
                 }
                 else {
@@ -110,13 +114,23 @@ $(function(){
                             <tr>
                                 <th class="round_no">`+i+`</th>
                                 <td id=`+data.t_id+`status`+i+`>`+data.status[i-1]+`</td>
-                                <td><button type="button" class="btn btn-primary" data-id1=`+i+`
+                                <td><button type="button" class="btn btn-primary l_btn" data-id1=`+i+`
                                 data-toggle="modal" data-target="#round_modal">Execute</button></td>
                                 <td><button type="button" class="btn btn-primary" data-id2=`+i+`
                                 data-toggle="modal" data-target="#singleRound_modal">Result</button></td>
                             </tr>`
                         $round.append(row)
                     }
+                    for(var i=data.max_round.max_round-1;i>=1;i--){
+                        console.log()
+                        $('[data-id1='+i+']').attr('disabled', true);
+                    }
+                    for(var i=data.max_round.max_round+1;i<=Math.log2(data.count);i++){
+                        console.log()
+                        $('[data-id1='+i+']').attr('disabled', true);
+                        $('[data-id2='+i+']').attr('disabled', true);
+                    }
+
                 }
                 else {
                     alert(data.msg)
@@ -193,12 +207,32 @@ $(function(){
         var target = event.relatedTarget;
         var round = $(target).attr('data-id2');
         event.stopPropagation();
-        console.log(round,"mmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
         $.ajax({
             method: 'GET',
             url: '/getRoundResult/'+round,
             success: function(data){
-                alert("")
+                $('#mt_body2').empty();
+                data.data.forEach(function(match){
+                    var row = `
+                            <tr>
+                                <td>`+match.player1_name+`</td>
+                                <td>`+match.player2_name+`</td>
+                                <td>`+match.winner_name+`</td>
+                            </tr>
+                    `
+                    $('#mt_body2').append(row);
+                })
+
+            }
+        })
+    })
+
+    $('.logout').on('click',function(){
+        $.ajax({
+            method:'GET',
+            url:'/logout',
+            success: function(data){
+
             }
         })
     })

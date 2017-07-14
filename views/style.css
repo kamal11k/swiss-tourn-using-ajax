@@ -72,14 +72,17 @@ li {
 }
 
 button[class=logout] {
-    background-color: #d23636;
+    background-color: #29b135;
     color: white;
-    float: right;
-    padding: 14px 20px;
     margin: 8px 0;
     border: none;
     cursor: pointer;
-    width: 100px;
+    width: 50px;
+    margin-left: 200px;
+    margin-top: 20px;
+}
+.btn_start {
+    margin-top: 20px;
 }
 
 .fixture {
@@ -95,7 +98,6 @@ button[class=logout] {
 input[class=player] {
     width: 50%;
     padding: 12px 20px;
-    margin: 8px 0;
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
@@ -104,14 +106,19 @@ input[class=player] {
 input[name=p_name]{
     width: 75%;
     margin-left: 30px;
+
 }
 .login {
     margin-left: 400px;
+    cursor: pointer;
     width: 550px;
     color: white;
     background-color: #9a618d;
     height: 40px;
     font-size: 15px;
+}
+.main {
+    margin: 20px;
 }
 
 button:hover {

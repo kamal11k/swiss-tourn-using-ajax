@@ -5,17 +5,19 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
-<header class=" row">
+<div class="main">
+    <header class=" row">
         <div class="col-md-4 tour_name">
             <h2>Tournament Name:  {{tournament.name}}</h2>
         </div>
         <div class="col-md-4 tour_status">
             <h2>Status:  {{tournament.status}} </h2>
         </div>
-        <div class="col-md-4 input-group-btn">
+        <div class="col-md-4 ">
             <button class="btn btn-warning btn_start" type="submit">START</button>
+            <button class='logout' type="submit">logout</button>
         </div>
-</header>
+    </header>
 
 <div class="row">
     <div class="col-md-6">
@@ -36,7 +38,7 @@
                         <option>{{name}}</option>
                     {{/each}}
                 </select>
-                <button type="submit" class="btn btn-primary btn-primary :hover btn_addExPlayer">Add here</button>
+                <button type="submit" class="btn btn-primary btn-primary :hover btn_addExPlayer">Click</button>
             </div>
         </div>
     </div>
@@ -161,10 +163,11 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary btn_report" data-dismiss="modal">Submit</button>
+                <!-- <button type="button" class="btn btn-primary btn_report" data-dismiss="modal">Submit</button> -->
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

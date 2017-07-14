@@ -35,18 +35,19 @@ app.post('/addnewPlayer',checkSignIn,function(req,res,next){
     var tournament_id = req.session.t_id;
     var player_name = req.body.p_name;
     var user_id = req.session.user_id;
+    console.log(tournament_id)
     swiss.isMatchStarted(tournament_id,function(error,isStarted){
         if(error){
             res.end('error')
         }
         else {
             if (typeof isStarted != 'undefined'){
-                res.json({"msg":false});
+                res.json({"msg":true});
             }
             else {
                 swiss.registerNewPlayer(user_id,tournament_id,player_name,function(error,x){
                     if(error){
-                        res.end('Registration failure');
+                        res.json({"msg":true})
                     }
                     else{
                         //res.end('Player registered successfully!!');
@@ -68,7 +69,7 @@ app.post('/addExistingPlayer',checkSignIn,function(req,res,next){
         }
         else {
             if (typeof isStarted != 'undefined'){
-                res.end("Can't add player once the match has started");
+                res.json({"msg":true})
             }
             else {
                 swiss.registerExistingPlayer(user_id,tournament_id,player_name,function(error,x){
@@ -194,6 +195,7 @@ app.post('/add_player',checkSignIn,function(req,res,next){
             res.end('error')
         }
         else {
+            console.log(isStarted);
             if (typeof isStarted != 'undefined'){
                 res.end("Can't add player once the match has started");
             }
@@ -331,11 +333,19 @@ app.get('/Start',checkSignIn,function(req,res,next){
                 res.json({"msg":'No. of players should be power of 2.  example- 2, 4, 8, 16 etc'});
             }
             else {
-                swiss.getRoundStatus(tournament_id,count,function(error,status){
-                    res.json({  "count":count,
-                                "t_id":tournament_id,
-                                "status":status,
-                                "msg":false})
+                swiss.getMaxRound(tournament_id,function(error,max_round){
+                    if(error){
+
+                    }
+                    else{
+                        swiss.getRoundStatus(tournament_id,count,function(error,status){
+                            res.json({  "count":count,
+                                        "t_id":tournament_id,
+                                        "status":status,
+                                        "max_round":max_round,
+                                        "msg":false})
+                        })
+                    }
                 })
             }
         }
@@ -370,12 +380,12 @@ app.get('/getFixture/:round',checkSignIn,function(req,res,next){
 app.get('/getroundResult/:round',checkSignIn,function(req,res,next){
     var round = req.params.round;
     var t_id = req.session.t_id;
-    swiss.getroundResult(t_id,round,function(err,res){
-        if(error){
+    swiss.getroundResult(t_id,round,function(err,result){
+        if(err){
 
         }
         else{
-            console.log(res);
+            res.json({"data":result})
         }
     })
 })
