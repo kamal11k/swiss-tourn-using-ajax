@@ -292,9 +292,30 @@ app.post('/reportMatch',checkSignIn,function(req,res,result){
                 // res.json({"msg":"error"})
             }
             else {
-                //res.json({"msg":})
+
             }
         })
+    })
+    swiss.countPlayers(t_id,function(err,count){
+        if(err){
+
+        }
+        else {
+            swiss.setStatus(t_id,count,roundInfo[0].round,function(error,status){
+                if(error){
+
+                }
+                else{
+                    console.log(status);
+                    res.json({
+                        "count":count,
+                        "round":roundInfo[0].round,
+                        "status":status,
+                        "t_id":t_id
+                    })
+                }
+            })
+        }
     })
 
 })
@@ -310,7 +331,12 @@ app.get('/Start',checkSignIn,function(req,res,next){
                 res.json({"msg":'No. of players should be power of 2.  example- 2, 4, 8, 16 etc'});
             }
             else {
-                res.json({"count":count,"msg":false})
+                swiss.getRoundStatus(tournament_id,count,function(error,status){
+                    res.json({  "count":count,
+                                "t_id":tournament_id,
+                                "status":status,
+                                "msg":false})
+                })
             }
         }
     })
@@ -340,6 +366,19 @@ app.get('/getFixture/:round',checkSignIn,function(req,res,next){
 
     })
 });
+
+app.get('/getroundResult/:round',checkSignIn,function(req,res,next){
+    var round = req.params.round;
+    var t_id = req.session.t_id;
+    swiss.getroundResult(t_id,round,function(err,res){
+        if(error){
+
+        }
+        else{
+            console.log(res);
+        }
+    })
+})
 
 app.post('/Players',checkSignIn,function(req,res,next){
     var tournament_id = req.body.t_id;

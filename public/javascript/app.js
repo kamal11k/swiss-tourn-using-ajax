@@ -8,6 +8,7 @@ $(function(){
     var $round = $('.round');
     var $round_modal = $('#round_modal');
     var $btn_report = $('.btn_report');
+    var $singleRound_modal = $('#singleRound_modal');
 
 
     function existingPlayers(Players){
@@ -108,10 +109,11 @@ $(function(){
                         var row = `
                             <tr>
                                 <th class="round_no">`+i+`</th>
-                                <td>Not Started</td>
-                                <td><button type="button" class="btn btn-primary" data-id=`+i+`
+                                <td id=`+data.t_id+`status`+i+`>`+data.status[i-1]+`</td>
+                                <td><button type="button" class="btn btn-primary" data-id1=`+i+`
                                 data-toggle="modal" data-target="#round_modal">Execute</button></td>
-                                <td>Not Declared</td>
+                                <td><button type="button" class="btn btn-primary" data-id2=`+i+`
+                                data-toggle="modal" data-target="#singleRound_modal">Result</button></td>
                             </tr>`
                         $round.append(row)
                     }
@@ -125,7 +127,7 @@ $(function(){
 
     $round_modal.on('show.bs.modal',function(event){
         var target = event.relatedTarget;
-        var round = $(target).attr('data-id');
+        var round = $(target).attr('data-id1');
         event.stopPropagation();
         //console.log(round);
         $.ajax({
@@ -178,7 +180,25 @@ $(function(){
             data: data,
             url: '/reportMatch',
             success: function(data){
+                playerStanding();
+                var status = `<h2>`+data.status+`</h2>`
+                $('.tour_status').html(status);
+                $('#'+data.t_id+'status'+data.round).html('Completed');
+                //$('#'+data.t_id+'winner'+data.round).html(data.winner);
+            }
+        })
+    })
 
+    $singleRound_modal.on('show.bs.modal',function(event){
+        var target = event.relatedTarget;
+        var round = $(target).attr('data-id2');
+        event.stopPropagation();
+        console.log(round,"mmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
+        $.ajax({
+            method: 'GET',
+            url: '/getRoundResult/'+round,
+            success: function(data){
+                alert("")
             }
         })
     })

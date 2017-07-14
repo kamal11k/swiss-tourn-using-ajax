@@ -127,11 +127,46 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary btn_report">Submit</button>
+                <button type="button" class="btn btn-danger btn_report" data-dismiss="modal">Submit</button>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal for round result-->
+<div class="modal fade" id="singleRound_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Round Result</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body2">
+                <div class="col-lg-offset-1 col-lg-10">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="danger">
+                              <th>Player1</th>
+                              <th>Player2</th>
+                              <th>Winner</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mt_body2">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn_report" data-dismiss="modal">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/javascript/app.js"></script>
