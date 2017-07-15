@@ -72,7 +72,7 @@ li {
 }
 
 button[class=logout] {
-    background-color: #b1298c;
+    background-color: #c58e78;
     color: white;
     margin: 8px 0;
     border: none;
@@ -80,6 +80,9 @@ button[class=logout] {
     width: 50px;
     margin-left: 200px;
     margin-top: 20px;
+}
+.winner_declare{
+    display: none;
 }
 
 .btn_start {

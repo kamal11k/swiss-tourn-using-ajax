@@ -10,7 +10,6 @@ $(function(){
     var $singleRound_modal = $('#singleRound_modal');
 
 
-
     function existingPlayers(Players){
         //console.log(Players)
         $('.selectpicker').html('')
@@ -24,6 +23,9 @@ $(function(){
             console.log("iloveu")
             $('[data-id1='+max_round+']').attr('disabled', true);
             $('[data-id2='+max_round+']').attr('disabled', false);
+            var winner = $('.standing').children("tr:first").children("th:first")[0].innerHTML
+            $('.btn_start').html("Winner")
+            $('.winner_declare').html(winner).show();
         }
         else{
             $('[data-id1='+max_round+']').attr('disabled', true);
@@ -58,10 +60,10 @@ $(function(){
             url: '/createTournament',
             data : data,
             success:function(data){
-                alert(data.insertId)
-                $('.tour_table').show();
+                var id = data.data.insertId;
+                // $('.tour_table').show();
                 var html =
-                        "<tr><th><a class='tour' href='/individualTournament/"+data.insertId+"'>\
+                        "<tr><th><a class='tour' href='/individualTournament/"+id+"'>\
                         "+name+"</a></td><td>Not Started</td><td>Not declared</td></tr>"
                 $('tbody').append(html)
             }
@@ -214,7 +216,6 @@ $(function(){
                 $('#'+data.t_id+'status'+data.round).html('Completed');
                 //$('#'+data.t_id+'winner'+data.round).html(data.winner);
                 var t_id=data.t_id;
-                alert(t_id)
                 var info={t_id:t_id};
                 $.ajax({
                     data:info,

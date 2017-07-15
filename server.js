@@ -132,7 +132,7 @@ app.post('/createTournament',checkSignIn,function(req,res,next){
         if(error)
             res.end('Unsuccessfull');
         else {
-            res.json({msg:"done"});
+            res.json({data:x});
         }
     })
 })
