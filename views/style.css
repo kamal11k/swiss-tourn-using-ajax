@@ -72,7 +72,7 @@ li {
 }
 
 button[class=logout] {
-    background-color: #29b135;
+    background-color: #b1298c;
     color: white;
     margin: 8px 0;
     border: none;
@@ -81,8 +81,12 @@ button[class=logout] {
     margin-left: 200px;
     margin-top: 20px;
 }
+
 .btn_start {
     margin-top: 20px;
+}
+.round_table {
+    display: none;
 }
 
 .fixture {

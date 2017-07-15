@@ -150,6 +150,29 @@ app.get('/viewTournament',checkSignIn,function(req,res,next){
     })
 })
 
+app.post('/infoForDisable',checkSignIn,function(req,res,next){
+    var tournament_id = req.body.t_id;
+    swiss.countPlayers(tournament_id,function(error,x){
+        if(error)
+            res.end('Error occured');
+        else{
+            swiss.getMaxRound(tournament_id,function(error,max_round){
+                if(error){
+
+                }
+                else{
+                    console.log(x,max_round)
+                    res.json({
+                        "count":x,
+                        "max_round":max_round
+                    })
+                }
+            })
+        }
+    })
+
+})
+
 app.get('/individualTournament/:t_id',checkSignIn,function(req,res,next){
     req.session.t_id = req.params.t_id;
     tournament_id = req.session.t_id;

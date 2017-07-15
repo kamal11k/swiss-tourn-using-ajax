@@ -19,8 +19,18 @@ $(function(){
         })
     }
 
-    function disableButtons(t_id){
-
+    function disableButtons(count,max_round){
+        if(Math.log2(count)==max_round){
+            console.log("iloveu")
+            $('[data-id1='+max_round+']').attr('disabled', true);
+            $('[data-id2='+max_round+']').attr('disabled', false);
+        }
+        else{
+            $('[data-id1='+max_round+']').attr('disabled', true);
+            $('[data-id2='+max_round+']').attr('disabled', false);
+            var next = max_round+1;
+            $('[data-id1='+next+']').attr('disabled', false);
+        }
     }
 
     function playerStanding(){
@@ -48,6 +58,8 @@ $(function(){
             url: '/createTournament',
             data : data,
             success:function(data){
+                alert(data.insertId)
+                $('.tour_table').show();
                 var html =
                         "<tr><th><a class='tour' href='/individualTournament/"+data.insertId+"'>\
                         "+name+"</a></td><td>Not Started</td><td>Not declared</td></tr>"
@@ -67,7 +79,7 @@ $(function(){
             data : data,
             success:function(data){
                 if(data.msg){
-                    alert("Can't add once match started")
+                    alert("Can't add Player")
                 }
                 else {
                     $('.Players').append("<li>"+name+"</li>");
@@ -90,7 +102,7 @@ $(function(){
             data : data,
             success:function(data){
                 if(data.msg){
-                    alert("Can't add once match started")
+                    alert("Can't add player")
                 }
                 else {
                     $('.Players').append("<li>"+name+"</li>");
@@ -108,25 +120,27 @@ $(function(){
             url: '/Start',
             success: function(data){
                 if(!data.msg){
+                    $('.round_table').show();
                     $round.empty();
                     for(var i=1;i<=Math.log2(data.count);i++){
                         var row = `
                             <tr>
                                 <th class="round_no">`+i+`</th>
                                 <td id=`+data.t_id+`status`+i+`>`+data.status[i-1]+`</td>
-                                <td><button type="button" class="btn btn-primary l_btn" data-id1=`+i+`
+                                <td><button type="button" class="btn btn-danger l_btn" data-id1=`+i+`
                                 data-toggle="modal" data-target="#round_modal">Execute</button></td>
-                                <td><button type="button" class="btn btn-primary" data-id2=`+i+`
+                                <td><button type="button" class="btn btn-danger" data-id2=`+i+`
                                 data-toggle="modal" data-target="#singleRound_modal">Result</button></td>
                             </tr>`
                         $round.append(row)
                     }
+                    $('[data-id1='+data.max_round.max_round+']').attr('disabled', true);
+                    var next = data.max_round.max_round+1;
+                    $('[data-id2='+next+']').attr('disabled', true);
                     for(var i=data.max_round.max_round-1;i>=1;i--){
-                        console.log()
                         $('[data-id1='+i+']').attr('disabled', true);
                     }
-                    for(var i=data.max_round.max_round+1;i<=Math.log2(data.count);i++){
-                        console.log()
+                    for(var i=data.max_round.max_round+2;i<=Math.log2(data.count);i++){
                         $('[data-id1='+i+']').attr('disabled', true);
                         $('[data-id2='+i+']').attr('disabled', true);
                     }
@@ -199,6 +213,18 @@ $(function(){
                 $('.tour_status').html(status);
                 $('#'+data.t_id+'status'+data.round).html('Completed');
                 //$('#'+data.t_id+'winner'+data.round).html(data.winner);
+                var t_id=data.t_id;
+                alert(t_id)
+                var info={t_id:t_id};
+                $.ajax({
+                    data:info,
+                    method:'POST',
+                    url:'/infoForDisable',
+                    success: function(data){
+                        console.log(data.count+""+data.max_round.max_round)
+                        disableButtons(data.count,data.max_round.max_round);
+                    }
+                })
             }
         })
     })

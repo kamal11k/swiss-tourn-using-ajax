@@ -14,7 +14,7 @@
             <h2>Status:  {{tournament.status}} </h2>
         </div>
         <div class="col-md-4 ">
-            <button class="btn btn-warning btn_start" type="submit">START</button>
+            <button class="btn btn-success btn_start" type="submit">START</button>
             <button class='logout' type="submit">logout</button>
         </div>
     </header>
@@ -23,7 +23,7 @@
     <div class="col-md-6">
         <div class="row">
             <input class="inputPname" placeholder="Enter Player Name" type="text" name="p_name" required>
-            <button type="submit" class="btn btn-primary btn_addPlayer">Add Player</button>
+            <button type="submit" class="btn btn-success btn_addPlayer">Add Player</button>
         </div>
         <div class="row ">
             <div class="col-md-6 Players">
@@ -38,7 +38,7 @@
                         <option>{{name}}</option>
                     {{/each}}
                 </select>
-                <button type="submit" class="btn btn-primary btn-primary :hover btn_addExPlayer">Click</button>
+                <button type="submit" class="btn btn-success btn_addExPlayer">Click!!</button>
             </div>
         </div>
     </div>
@@ -65,7 +65,7 @@
         </table>
     </div>
 </div>
-<div class="row round_table">
+<div class="row round_table" style="display: none;">
     <div class="col-md-12">
         <table class="table table-striped ">
             <thead >
