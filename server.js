@@ -137,6 +137,18 @@ app.post('/createTournament',checkSignIn,function(req,res,next){
     })
 })
 
+app.post('/setWinner',checkSignIn,function(req,res,next){
+    var t_id = req.body.t_id;
+    var winner = req.body.winner;
+    swiss.setWinner(t_id,winner,function(error,x){
+        if(error)
+            res.end('Unsuccessfull');
+        else {
+            res.json({data:x});
+        }
+    })
+})
+
 app.get('/viewTournament',checkSignIn,function(req,res,next){
     var user_id = req.session.user_id;
     swiss.viewTournament(user_id,function(error,tournaments){

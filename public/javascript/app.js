@@ -18,14 +18,29 @@ $(function(){
         })
     }
 
-    function disableButtons(count,max_round){
+    function setWinner(t_id,winner){
+        var data = {
+                t_id:t_id,
+                winner:winner
+            }
+        $.ajax({
+            method: 'POST',
+            data:data,
+            url: '/setWinner',
+            success: function(data){
+
+            }
+        })
+    }
+
+    function disableButtons(t_id,count,max_round){
         if(Math.log2(count)==max_round){
-            console.log("iloveu")
             $('[data-id1='+max_round+']').attr('disabled', true);
             $('[data-id2='+max_round+']').attr('disabled', false);
             var winner = $('.standing').children("tr:first").children("th:first")[0].innerHTML
             $('.btn_start').html("Winner")
             $('.winner_declare').html(winner).show();
+            setWinner(t_id,winner);
         }
         else{
             $('[data-id1='+max_round+']').attr('disabled', true);
@@ -129,9 +144,9 @@ $(function(){
                             <tr>
                                 <th class="round_no">`+i+`</th>
                                 <td id=`+data.t_id+`status`+i+`>`+data.status[i-1]+`</td>
-                                <td><button type="button" class="btn btn-danger l_btn" data-id1=`+i+`
+                                <td><button type="button" class="btn btn-warning l_btn" data-id1=`+i+`
                                 data-toggle="modal" data-target="#round_modal">Execute</button></td>
-                                <td><button type="button" class="btn btn-danger" data-id2=`+i+`
+                                <td><button type="button" class="btn btn-primary" data-id2=`+i+`
                                 data-toggle="modal" data-target="#singleRound_modal">Result</button></td>
                             </tr>`
                         $round.append(row)
@@ -222,8 +237,7 @@ $(function(){
                     method:'POST',
                     url:'/infoForDisable',
                     success: function(data){
-                        console.log(data.count+""+data.max_round.max_round)
-                        disableButtons(data.count,data.max_round.max_round);
+                        disableButtons(t_id,data.count,data.max_round.max_round);
                     }
                 })
             }

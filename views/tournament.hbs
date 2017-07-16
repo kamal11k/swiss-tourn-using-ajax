@@ -6,6 +6,13 @@
 </head>
 <body>
 <div class="main">
+    <div class="row logOut">
+       <div col-md-10></div>
+       <div col-md-2>
+           <button class='logout' type="submit">Logout</button>
+       </div>
+    </div>
+
     <header class=" row">
         <div class="col-md-4 tour_name">
             <h2>Tournament Name:  {{tournament.name}}</h2>
@@ -16,159 +23,139 @@
         <div class="col-md-4 ">
             <button class="btn btn-success btn_start" type="submit">START</button>
             <h3 class=winner_declare></h3>
-            <button class='logout' type="submit">logout</button>
         </div>
     </header>
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="row">
-            <input class="inputPname" placeholder="Enter Player Name" type="text" name="p_name" required>
-            <button type="submit" class="btn btn-success btn_addPlayer">Add Player</button>
-        </div>
-        <div class="row ">
-            <div class="col-md-6 Players">
-            {{#each players}}
-                <li>{{name}}</li>
-            {{/each}}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <input class="inputPname" placeholder="Enter Player Name" type="text" name="p_name" required>
+                <button type="submit" class="btn btn-primary btn_addPlayer">Add Player</button>
             </div>
-            <div class="col-md-6 existings">
-                <label><h4>Existing Players</h4></label>
-                <select id="tick1" class="selectpicker">
-                    {{#each ex_players}}
-                        <option>{{name}}</option>
-                    {{/each}}
-                </select>
-                <button type="submit" class="btn btn-success btn_addExPlayer">Click!!</button>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <table class="table table-striped">
-            <thead class="thead-inverse">
-                <tr class="danger">
-                    <th>Name</th>
-                    <th>Matches</th>
-                    <th>Wins</th>
-                    <th>Losses</th>
-                </tr>
-            </thead>
-            <tbody class="standing">
-                {{#each standing}}
-                    <tr>
-                        <th>{{Name}}</th>
-                        <td>{{Matches}}</td>
-                        <td>{{Wins}}</td>
-                        <td>{{Losses}}</td>
-                    </tr>
+            <div class="row ">
+                <div class="col-md-6 Players">
+                {{#each players}}
+                    <li>{{name}}</li>
                 {{/each}}
-            </tbody>
-        </table>
-    </div>
-</div>
-<div class="row round_table" >
-    <div class="col-md-12">
-        <table class="table table-striped ">
-            <thead >
-                <tr class="danger">
-                    <th>Round</th>
-                    <th>Status</th>
-                    <th>Execute</th>
-                    <th>Winner</th>
-                </tr>
-            </thead>
-            <tbody class="round">
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<!-- <button type="button" class="btn btn-primary" id="kamal">
-  Launch demo modal
-</button> -->
-<!--testingaaaaaaaaaaaaaaaaaaaaaaaaaaa-->
-<!-- <div class="col-lg-offset-1 col-lg-10">
-    <table class="table table-striped">
-        <thead>
-            <tr class="success">
-              <th>Player1</th>
-              <th>Player2</th>
-              <th>Winner</th>
-            </tr>
-        </thead>
-        <tbody class="testing">
-
-        </tbody>
-    </table>
-</div>
- -->
-<!-- Modal -->
-<div class="modal fade" id="round_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Fixtures</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="col-lg-offset-1 col-lg-10">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr class="danger">
-                              <th>Player1</th>
-                              <th>Player2</th>
-                              <th>Winner</th>
-                            </tr>
-                        </thead>
-                        <tbody id="mt_body">
-
-                        </tbody>
-                    </table>
+                </div>
+                <div class="col-md-6 existings">
+                    <label><h4>Existing Players</h4></label>
+                    <select id="tick1" class="selectpicker">
+                        {{#each ex_players}}
+                            <option>{{name}}</option>
+                        {{/each}}
+                    </select>
+                    <button type="submit" class="btn btn-warning btn_addExPlayer">Click!!</button>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger btn_report" data-dismiss="modal">Submit</button>
+        </div>
+        <div class="col-md-6">
+            <table class="table table-striped">
+                <thead class="thead-inverse">
+                    <tr class="danger">
+                        <th>Name</th>
+                        <th>Matches</th>
+                        <th>Wins</th>
+                        <th>Losses</th>
+                    </tr>
+                </thead>
+                <tbody class="standing">
+                    {{#each standing}}
+                        <tr>
+                            <th>{{Name}}</th>
+                            <td>{{Matches}}</td>
+                            <td>{{Wins}}</td>
+                            <td>{{Losses}}</td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row round_table" >
+        <div class="col-md-12">
+            <table class="table table-striped ">
+                <thead >
+                    <tr class="info">
+                        <th>Round</th>
+                        <th>Status</th>
+                        <th>Execute</th>
+                        <th>Winner</th>
+                    </tr>
+                </thead>
+                <tbody class="round">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="round_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Fixtures</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-lg-offset-1 col-lg-10">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr class="danger">
+                                  <th>Player1</th>
+                                  <th>Player2</th>
+                                  <th>Winner</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mt_body">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger btn_report" data-dismiss="modal">Submit</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Modal for round result-->
-<div class="modal fade" id="singleRound_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Round Result</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body2">
-                <div class="col-lg-offset-1 col-lg-10">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr class="danger">
-                              <th>Player1</th>
-                              <th>Player2</th>
-                              <th>Winner</th>
-                            </tr>
-                        </thead>
-                        <tbody id="mt_body2">
-
-                        </tbody>
-                    </table>
+    <!-- Modal for round result-->
+    <div class="modal fade" id="singleRound_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Round Result</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <!-- <button type="button" class="btn btn-primary btn_report" data-dismiss="modal">Submit</button> -->
+                <div class="modal-body2">
+                    <div class="col-lg-offset-1 col-lg-10">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr class="danger">
+                                  <th>Player1</th>
+                                  <th>Player2</th>
+                                  <th>Winner</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mt_body2">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary btn_report" data-dismiss="modal">Submit</button> -->
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
