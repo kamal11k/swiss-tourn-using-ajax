@@ -264,7 +264,9 @@ app.get('/Start',checkSignIn,function(req,res,next){
             res.end(error)
         }
         else {
-            if(!(count&&(count & (count - 1)) === 0)){
+            console.log(count,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab");
+            if(!(Math.log2(count)%1==0)){
+                console.log(count,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                 res.json({"msg":'No. of players should be power of 2.  example- 2, 4, 8, 16 etc'});
             }
             else {
