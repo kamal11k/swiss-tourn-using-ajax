@@ -87,25 +87,30 @@ $(function(){
 
     $btn_addPlayer.on('click',function(){
         var name = $('.inputPname').val();
-        var data = {
+
+        if(name=='')
+            alert('Name required')
+        else{
+            var data = {
             p_name :name
-        }
-        $.ajax({
-            method: 'POST',
-            url: '/addnewPlayer',
-            data : data,
-            success:function(data){
-                if(data.msg){
-                    alert("Can't add Player")
-                }
-                else {
-                    $('.Players').append("<li>"+name+"</li>");
-                    console.log(data);
-                    existingPlayers(data.data);
-                    playerStanding();
-                }
             }
-        })
+            $.ajax({
+                method: 'POST',
+                url: '/addnewPlayer',
+                data : data,
+                success:function(data){
+                    if(data.msg){
+                        alert("Can't add Player")
+                    }
+                    else {
+                        $('.Players').append("<li>"+name+"</li>");
+                        console.log(data);
+                        existingPlayers(data.data);
+                        playerStanding();
+                    }
+                }
+            })
+        }
     })
 
     $btn_addExPlayer.on('click',function(){
@@ -268,15 +273,15 @@ $(function(){
         })
     })
 
-    $('.logout').on('click',function(){
-        $.ajax({
-            method:'GET',
-            url:'/logout',
-            success: function(data){
-
-            }
-        })
-    })
+    // $('.logout').on('click',function(){
+    //     $.ajax({
+    //         method:'GET',
+    //         url:'/logout',
+    //         success: function(data){
+    //             alert("he he");
+    //         }
+    //     })
+    // })
 
 
 

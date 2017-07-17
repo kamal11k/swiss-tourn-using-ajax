@@ -35,7 +35,7 @@ app.post('/addnewPlayer',checkSignIn,function(req,res,next){
     var tournament_id = req.session.t_id;
     var player_name = req.body.p_name;
     var user_id = req.session.user_id;
-    console.log(tournament_id)
+
     swiss.isMatchStarted(tournament_id,function(error,isStarted){
         if(error){
             res.end('error')
@@ -94,25 +94,6 @@ app.get('/count',function(req,res,next){
             res.end('No. of player(s): '+x);
     })
 })
-
-app.delete('/delete',function(req,res,next){
-    swiss.deletePlayers(function(error,x){
-        if(error)
-            res.end('Error occured');
-        else
-            res.end('deleted row(s) '+x);
-    })
-})
-
-// app.delete('/delete/:id',function(req,res,next){
-//     swiss.removePlayer(req.params.id,function(error,x){
-//         if(error)
-//             res.end('Error occured');
-//         else
-//             res.end('deleted row(s) '+x);
-//     })
-// })
-
 
 app.post('/register',function(req,res,next){
     req.body.hash = bcrypt.hashSync(req.body.pswd, saltRounds)
@@ -222,33 +203,6 @@ app.get('/individualTournament/:t_id',checkSignIn,function(req,res,next){
     //res.render('tournamentMenu.ejs',{"t_id":tournament_id})
 })
 
-app.post('/add_player',checkSignIn,function(req,res,next){
-    var tournament_id = req.body.t_id;
-    var user_id = req.session.user_id;
-    swiss.isMatchStarted(tournament_id,function(error,isStarted){
-        if(error){
-            res.end('error')
-        }
-        else {
-            console.log(isStarted);
-            if (typeof isStarted != 'undefined'){
-                res.end("Can't add player once the match has started");
-            }
-            else {
-                swiss.existingPlayers(user_id,tournament_id,function(error,results){
-                    if(error){
-                        res.end('error')
-                    }
-                    else{
-                        res.render('addPlayer.ejs',{"t_id":tournament_id,"data":results});
-                    }
-                })
-            }
-        }
-    })
-
-})
-
 app.post('/logIn',function(req,res,next){
     var user_name = req.body.user_name;
     var pswd = req.body.pswd;
@@ -264,61 +218,7 @@ app.post('/logIn',function(req,res,next){
     })
 })
 
-app.post('/ExecuteRound',checkSignIn,function(req,res,next){
-    var t_id = req.body.t_id;
-    var round = req.body.round;
-    console.log(round)
-    swiss.countPlayers(t_id,function(error,count){
-        if(error){
-            res.end(error)
-        }
-        else {
-            if(round > Math.log2(count)){
-                res.end('Tournament finished.  See winner in PlayerStanding');
-            }
-            else {
-                swiss.swissPairings(t_id,function(error, sp) {
-                    var arr = [];
-                    sp.forEach(function(pairing, index){
-                        if (Math.random() > 0.5) {
-                            swiss.reportMatch(t_id,round, pairing[0].id, pairing[1].id, function(){
-                                if (index == sp.length - 1) {
-                                    swiss.playerStandings(t_id,function(error, x) {
-                                        if (error) {
-                                            res.end('error');
-                                        }
-                                        else {
-                                            //res.json(x);
-                                        }
-                                    });
-                                }
-                            });
-                            arr.push(`${pairing[0].name} beats ${pairing[1].name}`);
-                            //res.json(`${pairing[0].name} beats ${pairing[1].name}`);
-                        }
-                        else {
-                            swiss.reportMatch(t_id, round, pairing[1].id, pairing[0].id, function(){
-                                if (index == sp.length - 1) {
-                                    swiss.playerStandings(t_id,function(error, x) {
-                                        if (error) {
-                                            res.end('error');
-                                        }
-                                        else {
-                                            //res.json(x);
-                                        }
-                                    });
-                                }
-                            });
-                            arr.push(`${pairing[1].name} beats ${pairing[0].name}`);
-                            //res.json(`${pairing[1].name} beats ${pairing[0].name}`);
-                        }
-                    });
-                    res.render('roundResults.ejs',{"data":arr,"t_id":t_id});
-                });
-            }
-        }
-    })
-})
+
 
 app.post('/reportMatch',checkSignIn,function(req,res,result){
     var t_id = req.session.t_id;
@@ -431,17 +331,13 @@ app.post('/Players',checkSignIn,function(req,res,next){
         if(error)
             res.end('No players present');
         else{
-            //res.json(data);
-            res.render('seePlayers.ejs',{'data':data})
+            res.json(data);
         }
 
     })
 });
 
 
-app.get('/createTournament',checkSignIn,function(req,res,next){
-    res.sendFile(path.join(__dirname + '/views/tournament.html'));
-})
 app.use('/',express.static(path.join(__dirname ,'/views')));
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -457,7 +353,7 @@ function checkSignIn(req, res, next){
 app.get('/logout', function(req,res){
     req.session.destroy(function (err) {
     console.log("COOKIE DELETED");
-    res.redirect('/');
+    res.sendFile(path.join(__dirname + '/views/logIn.html'));
     });
 });
 
