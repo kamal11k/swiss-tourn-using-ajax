@@ -30,7 +30,7 @@ module.exports = function(app,passport) {
     }));
 
     app.post('/addnewPlayer',isLoggedIn,function(req,res,next){
-      var tournament_id = req.session.t_id;
+      var tournament_id = req.body.t_id;
       var player_name = req.body.p_name;
       var user_id = req.session.passport.user;
 
@@ -39,7 +39,7 @@ module.exports = function(app,passport) {
               res.end('error')
           }
           else {
-              if (typeof isStarted != 'undefined'){
+              if (isStarted != 0){
                   res.json({"msg":true});
               }
               else {
@@ -58,7 +58,7 @@ module.exports = function(app,passport) {
     })
 
     app.post('/addExistingPlayer',isLoggedIn,function(req,res,next){
-        var tournament_id = req.session.t_id;
+        var tournament_id = req.body.t_id;
         var player_name = req.body.p_name;
         var user_id = req.session.passport.user;
         swiss.isMatchStarted(tournament_id,function(error,isStarted){
@@ -66,7 +66,8 @@ module.exports = function(app,passport) {
                 res.end('error')
             }
             else {
-                if (typeof isStarted != 'undefined'){
+                if (isStarted != 0){
+                    console.log("ha ha ha ha ha ha ")
                     res.json({"msg":true})
                 }
                 else {
@@ -131,6 +132,7 @@ module.exports = function(app,passport) {
     app.get('/viewTournament',isLoggedIn,function(req,res,next){
         console.log("hello");
         var user_id = req.session.passport.user;
+        console.log(user_id)
         swiss.viewTournament(user_id,function(error,tournaments){
             if(error)
                 res.end('Unsuccessfull');
@@ -142,9 +144,9 @@ module.exports = function(app,passport) {
         })
     })
 
-    app.post('/infoForDisable',isLoggedIn,function(req,res,next){
-        var tournament_id = req.body.t_id;
-        swiss.countPlayers(tournament_id,function(error,x){
+    app.get('/infoForDisable/:t_id',isLoggedIn,function(req,res,next){
+        var tournament_id = req.params.t_id;
+        swiss.countPlayers(tournament_id,function(error,count){
             if(error)
                 res.end('Error occured');
             else{
@@ -153,9 +155,9 @@ module.exports = function(app,passport) {
 
                     }
                     else{
-                        console.log(x,max_round)
+                        console.log(count,max_round)
                         res.json({
-                            "count":x,
+                            "count":count,
                             "max_round":max_round
                         })
                     }
@@ -166,8 +168,7 @@ module.exports = function(app,passport) {
     })
 
     app.get('/individualTournament/:t_id',isLoggedIn,function(req,res,next){
-        req.session.t_id = req.params.t_id;
-        tournament_id = req.session.t_id;
+        tournament_id = req.params.t_id;
         var user_id = req.session.passport.user;
         swiss.seePlayers(tournament_id,function(error,data){
             if(error)
@@ -202,48 +203,9 @@ module.exports = function(app,passport) {
         //res.render('tournamentMenu.ejs',{"t_id":tournament_id})
     })
 
-    // app.post('/logIn',function(req,res,next){
-    //     var user_name = req.body.user_name;
-    //     var pswd = req.body.pswd;
-    //     swiss.checkUser(user_name,pswd,function(error,result){
-    //         if(error)
-    //             res.end('Error occured');
-    //         else if(bcrypt.compareSync(pswd, result.password)){
-    //             req.session.passport.user = result.id;
-    //             res.redirect('/viewTournament')
-    //         }
-    //         else
-    //             res.sendFile(path.join(__dirname + '/views/relogIn.html'));
-    //     })
-    // })
-
-    // app.get('/', function(req, res) {
-    //         res.render('index');
-    // });
-
-
-    // app.get('/login', function(req, res) {
-    //     res.render('login', { message: req.flash('loginMessage') });
-    // });
-
-    // app.post('/login', passport.authenticate('local-login', {
-    //     successRedirect : '/viewTournament',
-    //     failureRedirect : '/login',
-    //     failureFlash : true
-    //     }),
-    //     function(req, res) {
-    //         if (req.body.remember) {
-    //           req.session.cookie.maxAge = 1000 * 60 * 3;
-    //       } else {
-    //           req.session.cookie.expires = false;
-    //       }
-    //       res.redirect('/');
-    // });
-
-
 
     app.post('/reportMatch',isLoggedIn,function(req,res,result){
-        var t_id = req.session.t_id;
+        var t_id = req.body.t_id;
         var roundInfo = req.body.roundDetails;
         roundInfo.forEach(function(match){
             swiss.reportMatch(t_id,match.round,match.winner_id,match.loser_id,function(error,res){
@@ -269,8 +231,7 @@ module.exports = function(app,passport) {
                         res.json({
                             "count":count,
                             "round":roundInfo[0].round,
-                            "status":status,
-                            "t_id":t_id
+                            "status":status
                         })
                     }
                 })
@@ -279,9 +240,8 @@ module.exports = function(app,passport) {
 
     })
 
-    app.get('/Start',isLoggedIn,function(req,res,next){
-        var tournament_id = req.session.t_id;
-        console.log(tournament_id)
+    app.get('/Start/:t_id',isLoggedIn,function(req,res,next){
+        var tournament_id = req.params.t_id;
         swiss.countPlayers(tournament_id,function(error,count){
           console.log(count,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab");
             if(error){
@@ -301,7 +261,6 @@ module.exports = function(app,passport) {
                         else{
                             swiss.getRoundStatus(tournament_id,count,function(error,status){
                                 res.json({  "count":count,
-                                            "t_id":tournament_id,
                                             "status":status,
                                             "max_round":max_round,
                                             "msg":false
@@ -314,8 +273,8 @@ module.exports = function(app,passport) {
         })
     });
 
-    app.get('/showStanding',isLoggedIn,function(req,res,next){
-        var tournament_id = req.session.t_id;
+    app.get('/showStanding/:t_id',isLoggedIn,function(req,res,next){
+        var tournament_id = req.params.t_id;
         swiss.playerStandings(tournament_id,function(error,data){
             if(error)
                 res.end('Error');
@@ -326,23 +285,23 @@ module.exports = function(app,passport) {
         })
     });
 
-    app.get('/getFixture/:round',isLoggedIn,function(req,res,next){
-        var tournament_id = req.session.t_id;
-        var round = req.params.round;
+    app.get('/getFixture/:info',isLoggedIn,function(req,res,next){
+        var round = req.params.info.split('.')[0];
+        var tournament_id = req.params.info.split('.')[1];
         swiss.swissPairings(tournament_id,function(error,data){
             if(error)
                 res.end('Error');
             else{
-                res.json({"pairs":data,"round":round});
+                res.json({"pairs":data});
             }
 
         })
     });
 
-    app.get('/getroundResult/:round',isLoggedIn,function(req,res,next){
-        var round = req.params.round;
-        var t_id = req.session.t_id;
-        swiss.getroundResult(t_id,round,function(err,result){
+    app.get('/getroundResult/:info',isLoggedIn,function(req,res,next){
+        var round = req.params.info.split('.')[0];
+        var tournament_id = req.params.info.split('.')[1];
+        swiss.getroundResult(tournament_id,round,function(err,result){
             if(err){
 
             }
@@ -351,19 +310,6 @@ module.exports = function(app,passport) {
             }
         })
     })
-
-    app.post('/Players',isLoggedIn,function(req,res,next){
-        var tournament_id = req.body.t_id;
-        swiss.seePlayers(tournament_id,function(error,data){
-            if(error)
-                res.end('No players present');
-            else{
-                res.json(data);
-            }
-
-        })
-    });
-
 
 
 

@@ -51,8 +51,9 @@ $(function(){
     }
 
     function playerStanding(){
+        var t_id = $('.hidden_id').val();
         $.ajax({
-            url: '/showStanding',
+            url: '/showStanding/'+t_id,
             success: function(standing){
                 $('.standing').empty();
                 standing.forEach(function(st){
@@ -72,11 +73,11 @@ $(function(){
             }
         $.ajax({
             method: 'POST',
-            url: '/createTournament',
+            url: '/createTournament';
             data : data,
             success:function(data){
                 var id = data.data.insertId;
-                // $('.tour_table').show();
+                $('.input_tour').val('')
                 var html =
                         "<tr><th><a class='tour' href='/individualTournament/"+id+"'>\
                         "+name+"</a></td><td>Not Started</td><td>Not declared</td></tr>"
@@ -87,18 +88,20 @@ $(function(){
 
     $btn_addPlayer.on('click',function(){
         var name = $('.inputPname').val();
-
+        var t_id = $('.hidden_id').val();
         if(name=='')
             alert('Name required')
         else{
             var data = {
-            p_name :name
+            p_name :name,
+            t_id: t_id
             }
             $.ajax({
                 method: 'POST',
                 url: '/addnewPlayer',
                 data : data,
                 success:function(data){
+                    $('.inputPname').val('');
                     if(data.msg){
                         alert("Can't add Player")
                     }
@@ -115,8 +118,10 @@ $(function(){
 
     $btn_addExPlayer.on('click',function(){
         var name = $('#tick1').val();
+        var t_id = $('.hidden_id').val();
         var data = {
-            p_name :name
+            p_name :name,
+            t_id: t_id
         }
         $.ajax({
             method: 'POST',
@@ -128,7 +133,7 @@ $(function(){
                 }
                 else {
                     $('.Players').append("<li>"+name+"</li>");
-                    console.log(data);
+                    console.log(data,'llll');
                     existingPlayers(data.data);
                     playerStanding();
                 }
@@ -137,9 +142,10 @@ $(function(){
     })
 
     $btn_start.on('click',function(event){
+        var t_id = $('.hidden_id').val();
         $.ajax({
             method:'GET',
-            url: '/Start',
+            url: '/Start/'+t_id,
             success: function(data){
                 if(!data.msg){
                     $('.round_table').show();
@@ -148,7 +154,7 @@ $(function(){
                         var row = `
                             <tr>
                                 <th class="round_no">`+i+`</th>
-                                <td id=`+data.t_id+`status`+i+`>`+data.status[i-1]+`</td>
+                                <td id=`+t_id+`status`+i+`>`+data.status[i-1]+`</td>
                                 <td><button type="button" class="btn btn-warning l_btn" data-id1=`+i+`
                                 data-toggle="modal" data-target="#round_modal">Execute</button></td>
                                 <td><button type="button" class="btn btn-primary" data-id2=`+i+`
@@ -178,14 +184,14 @@ $(function(){
     $round_modal.on('show.bs.modal',function(event){
         var target = event.relatedTarget;
         var round = $(target).attr('data-id1');
+        var t_id = $('.hidden_id').val();
         event.stopPropagation();
         //console.log(round);
         $.ajax({
             method: 'GET',
-            url: '/getFixture/'+round,
+            url: '/getFixture/'+round+'.'+t_id,
             success: function(data){
                 var pairs = data.pairs;
-                var round = data.round;
                 $('#mt_body').empty();
                 data.pairs.forEach(function(pair){
                     var player1 = pair[0].Name;
@@ -224,7 +230,8 @@ $(function(){
                 loser_id:info.split('/')[1]
             })
         })
-        var data = {roundDetails:roundDetails}
+        var t_id = $('.hidden_id').val();
+        var data = {roundDetails:roundDetails,t_id:t_id}
         $.ajax({
             method: 'POST',
             data: data,
@@ -233,14 +240,11 @@ $(function(){
                 playerStanding();
                 var status = `<h2>`+data.status+`</h2>`
                 $('.tour_status').html(status);
-                $('#'+data.t_id+'status'+data.round).html('Completed');
+                $('#'+t_id+'status'+data.round).html('Completed');
                 //$('#'+data.t_id+'winner'+data.round).html(data.winner);
-                var t_id=data.t_id;
-                var info={t_id:t_id};
                 $.ajax({
-                    data:info,
-                    method:'POST',
-                    url:'/infoForDisable',
+                    method:'GET',
+                    url:'/infoForDisable/'+t_id,
                     success: function(data){
                         disableButtons(t_id,data.count,data.max_round.max_round);
                     }
@@ -252,10 +256,11 @@ $(function(){
     $singleRound_modal.on('show.bs.modal',function(event){
         var target = event.relatedTarget;
         var round = $(target).attr('data-id2');
+        var t_id = $('.hidden_id').val();
         event.stopPropagation();
         $.ajax({
             method: 'GET',
-            url: '/getRoundResult/'+round,
+            url: '/getRoundResult/'+round+'.'+t_id,
             success: function(data){
                 $('#mt_body2').empty();
                 data.data.forEach(function(match){
