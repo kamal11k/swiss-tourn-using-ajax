@@ -103,8 +103,6 @@ $(function(){
                         alert("Can't add Player")
                     }
                     else {
-                        $('.inputPname').val('');
-                        $('.round').empty();
                         $('.Players').append("<li>"+name+"</li>");
                         console.log(data);
                         existingPlayers(data.data);
@@ -129,7 +127,6 @@ $(function(){
                     alert("Can't add player")
                 }
                 else {
-                    $('.round').empty();
                     $('.Players').append("<li>"+name+"</li>");
                     console.log(data);
                     existingPlayers(data.data);
