@@ -85,12 +85,23 @@ module.exports = function(app,passport) {
         })
     })
 
-    app.get('/count',function(req,res,next){
-        swiss.countPlayers(function(error,x){
-            if(error)
-                res.end('Error occured');
-            else
-                res.end('No. of player(s): '+x);
+    app.get('/canStartMatch/:t_id',function(req,res,next){
+        var t_id = req.params.t_id;
+        swiss.countPlayers(t_id,function(error,count){
+            console.log(count,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab");
+            if(error){
+                console.log('he he !! error')
+            }
+            else {
+                console.log(count,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab");
+                if(!(Math.log2(count)%1==0) || count==1){
+                    console.log(count,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                    res.json({"msg":'No. of players should be power of 2.  example- 2, 4, 8, 16 etc'});
+                }
+                else {
+                    res.json({"msg":false})
+                }
+            }
         })
     })
 
@@ -243,7 +254,7 @@ module.exports = function(app,passport) {
     app.get('/Start/:t_id',isLoggedIn,function(req,res,next){
         var tournament_id = req.params.t_id;
         swiss.countPlayers(tournament_id,function(error,count){
-          console.log(count,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab");
+            console.log(count,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab");
             if(error){
                 console.log('he he !! error')
             }

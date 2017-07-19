@@ -9,6 +9,52 @@ $(function(){
     var $btn_report = $('.btn_report');
     var $singleRound_modal = $('#singleRound_modal');
 
+    function start(){
+        var t_id = $('.hidden_id').val();
+        $.ajax({
+            method:'GET',
+            url: '/Start/'+t_id,
+            success: function(data){
+                if(!data.msg){
+                    var roundsToBePlayed = Math.log2(data.count);
+                    var roundsPlayed = data.max_round.max_round;
+                    $round.empty();
+                    for(var i=1;i<=roundsToBePlayed;i++){
+                        var row = `
+                            <tr>
+                                <th class="round_no">`+i+`</th>
+                                <td id=`+t_id+`status`+i+`>`+data.status[i-1]+`</td>
+                                <td><button type="button" class="btn btn-warning l_btn" data-id1=`+i+`
+                                data-toggle="modal" data-target="#round_modal">Execute</button></td>
+                                <td><button type="button" class="btn btn-primary" data-id2=`+i+`
+                                data-toggle="modal" data-target="#singleRound_modal">Result</button></td>
+                            </tr>`
+                        $round.append(row)
+                    }
+                    $('[data-id1='+roundsPlayed+']').attr('disabled', true);
+                    var next = roundsPlayed+1;
+                    $('[data-id2='+next+']').attr('disabled', true);
+                    for(var i=roundsPlayed-1;i>=1;i--){
+                        $('[data-id1='+i+']').attr('disabled', true);
+                    }
+                    for(var i=roundsPlayed+2;i<=roundsToBePlayed;i++){
+                        $('[data-id1='+i+']').attr('disabled', true);
+                        $('[data-id2='+i+']').attr('disabled', true);
+                    }
+                    if(roundsPlayed>0){
+                        $('.btn_start').text("Continue Game");
+                    }
+                    if(roundsPlayed==roundsToBePlayed){
+                        $('.round_table').show();
+                        $('.btn_start').text("Winner: ");
+                        $('.btn_start').attr('disabled' , true);
+                    }
+                }
+            }
+        })
+
+    }
+    start();
 
     function existingPlayers(Players){
         //console.log(Players)
@@ -73,7 +119,7 @@ $(function(){
             }
         $.ajax({
             method: 'POST',
-            url: '/createTournament';
+            url: '/createTournament',
             data : data,
             success:function(data){
                 var id = data.data.insertId;
@@ -144,40 +190,19 @@ $(function(){
     $btn_start.on('click',function(event){
         var t_id = $('.hidden_id').val();
         $.ajax({
-            method:'GET',
-            url: '/Start/'+t_id,
+            method: 'GET',
+            url: '/canStartMatch/'+t_id,
             success: function(data){
-                if(!data.msg){
-                    $('.round_table').show();
-                    $round.empty();
-                    for(var i=1;i<=Math.log2(data.count);i++){
-                        var row = `
-                            <tr>
-                                <th class="round_no">`+i+`</th>
-                                <td id=`+t_id+`status`+i+`>`+data.status[i-1]+`</td>
-                                <td><button type="button" class="btn btn-warning l_btn" data-id1=`+i+`
-                                data-toggle="modal" data-target="#round_modal">Execute</button></td>
-                                <td><button type="button" class="btn btn-primary" data-id2=`+i+`
-                                data-toggle="modal" data-target="#singleRound_modal">Result</button></td>
-                            </tr>`
-                        $round.append(row)
-                    }
-                    $('[data-id1='+data.max_round.max_round+']').attr('disabled', true);
-                    var next = data.max_round.max_round+1;
-                    $('[data-id2='+next+']').attr('disabled', true);
-                    for(var i=data.max_round.max_round-1;i>=1;i--){
-                        $('[data-id1='+i+']').attr('disabled', true);
-                    }
-                    for(var i=data.max_round.max_round+2;i<=Math.log2(data.count);i++){
-                        $('[data-id1='+i+']').attr('disabled', true);
-                        $('[data-id2='+i+']').attr('disabled', true);
-                    }
-
+                if(data.msg){
+                    alert('data.msg')
                 }
-                else {
-                    alert(data.msg)
+                else{
+                    start();
+                    $('.btn_start').attr('disabled',true);
+                    $('.round_table').show();
                 }
             }
+
         })
     })
 
