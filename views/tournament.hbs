@@ -7,8 +7,11 @@
 <body>
 <div class="main">
     <div class="row logOut">
-       <div class="col-md-10">
+       <div class="col-md-8">
          <img class="img-responsive user_logo"  src="http://localhost:8000/image.jpg" alt="user">
+       </div>
+        <div class="col-md-2">
+           <input class ="hidden_id" type="hidden"  value={{tournament.id}}></input>
        </div>
        <div class="col-md-2">
            <a href="/logOut"><button class='logout' type="submit">Logout</button></a>
@@ -51,8 +54,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 table-responsive">
-            <table class="table table-striped ">
+        <div class="col-md-6">
+            <table class="table table-striped">
                 <thead class="thead-inverse">
                     <tr class="danger">
                         <th>Name</th>
