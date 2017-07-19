@@ -46,7 +46,9 @@ $(function(){
                     }
                     if(roundsPlayed==roundsToBePlayed){
                         $('.round_table').show();
-                        $('.btn_start').text("Winner: ");
+                        var winner = $('.standing').children("tr:first").children("th:first")[0].innerHTML
+                        $('.btn_start').text("WINNER");
+                        $('.winner_declare').html(winner).show();
                         $('.btn_start').attr('disabled' , true);
                     }
                 }
@@ -152,6 +154,8 @@ $(function(){
                         alert("Can't add Player")
                     }
                     else {
+                        $(".round_table").css("display", "none");
+                        $('.btn_start').attr('disabled',false);
                         $('.Players').append("<li>"+name+"</li>");
                         console.log(data);
                         existingPlayers(data.data);
@@ -178,6 +182,8 @@ $(function(){
                     alert("Can't add player")
                 }
                 else {
+                    $(".round_table").css("display", "none");
+                    $('.btn_start').attr('disabled',false);
                     $('.Players').append("<li>"+name+"</li>");
                     console.log(data,'llll');
                     existingPlayers(data.data);
@@ -194,7 +200,7 @@ $(function(){
             url: '/canStartMatch/'+t_id,
             success: function(data){
                 if(data.msg){
-                    alert('data.msg')
+                    alert(data.msg)
                 }
                 else{
                     start();
