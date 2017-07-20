@@ -46,6 +46,7 @@ $(function(){
                     }
                     if(roundsPlayed==roundsToBePlayed){
                         $('.round_table').show();
+                        $('.winCup').show();
                         var winner = $('.standing').children("tr:first").children("th:first")[0].innerHTML
                         $('.btn_start').text("WINNER");
                         $('.winner_declare').html(winner).show();
@@ -57,6 +58,14 @@ $(function(){
 
     }
     start();
+
+    function checkExistings(){
+        if($('#tick1')[0].childElementCount==0){
+            $('.btn_addExPlayer').attr("disabled",true)
+        }
+    }
+    checkExistings();
+
 
     function existingPlayers(Players){
         //console.log(Players)
@@ -87,6 +96,7 @@ $(function(){
             $('[data-id2='+max_round+']').attr('disabled', false);
             var winner = $('.standing').children("tr:first").children("th:first")[0].innerHTML
             $('.btn_start').html("Winner")
+            $('.winCup').show();
             $('.winner_declare').html(winner).show();
             setWinner(t_id,winner);
         }
@@ -113,26 +123,6 @@ $(function(){
             }
         })
     }
-
-    $createTour.on('click',function(event){
-        var name = $('.input_tour').val()
-        var data = {
-                t_name: name
-            }
-        $.ajax({
-            method: 'POST',
-            url: '/createTournament',
-            data : data,
-            success:function(data){
-                var id = data.data.insertId;
-                $('.input_tour').val('')
-                var html =
-                        "<tr><th><a class='tour' href='/individualTournament/"+id+"'>\
-                        "+name+"</a></td><td>Not Started</td><td>Not declared</td></tr>"
-                $('tbody').append(html)
-            }
-        })
-    })
 
     $btn_addPlayer.on('click',function(){
         var name = $('.inputPname').val();
@@ -188,6 +178,7 @@ $(function(){
                     console.log(data,'llll');
                     existingPlayers(data.data);
                     playerStanding();
+                    checkExistings();
                 }
             }
         })

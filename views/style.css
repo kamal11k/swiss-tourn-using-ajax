@@ -19,6 +19,13 @@ input[class=input_tour], input[type=password] {
 input[class=hidden] {
     display: none;
 }
+.winCup {
+    height: 100px;
+    width: 100px;
+    float: right;
+    margin-top: 10px;
+    display: none;
+}
 h4 {
     color: #034175;
 }
@@ -83,16 +90,28 @@ button[class=logout] {
 }
 .winner_declare{
     display: none;
+    float: left;
+    color: red;
 }
 
 .btn_start {
     margin-top: 20px;
+    float: left;
+    margin-right: 60px;
 }
-.round_table {
-    display: none;
-}
+
 .logOut{
     background-color: #6cccd6;
+}
+
+.tour_table, .round_table {
+    display: none;
+}
+
+.message {
+    display: none;
+    text-align: center;
+    color: red;
 }
 
 .fixture {

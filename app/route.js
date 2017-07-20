@@ -121,9 +121,9 @@ module.exports = function(app,passport) {
         console.log(user_id,t_name);
         swiss.createTournament(user_id,t_name,function(error,x){
             if(error)
-                res.end('Unsuccessfull');
+                res.json({"msg":"Tournament alredy exists"})
             else {
-                res.json({data:x});
+                res.json({data:x,"msg":false});
             }
         })
     })
@@ -136,6 +136,18 @@ module.exports = function(app,passport) {
                 res.end('Unsuccessfull');
             else {
                 res.json({data:x});
+            }
+        })
+    })
+
+    app.get('/hasTournaments',isLoggedIn,function(req,res,next){
+        console.log("hello");
+        var user_id = req.session.passport.user;
+        swiss.hasTournaments(user_id,function(error,count){
+            if(count==0)
+                res.json({"msg":false});
+            else{
+                res.json({"msg":true});
             }
         })
     })
