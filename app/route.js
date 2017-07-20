@@ -30,31 +30,32 @@ module.exports = function(app,passport) {
     }));
 
     app.post('/addnewPlayer',isLoggedIn,function(req,res,next){
-      var tournament_id = req.body.t_id;
-      var player_name = req.body.p_name;
-      var user_id = req.session.passport.user;
+        var tournament_id = req.body.t_id;
+        var player_name = req.body.p_name;
+        var user_id = req.session.passport.user;
 
-      swiss.isMatchStarted(tournament_id,function(error,isStarted){
-          if(error){
+        swiss.isMatchStarted(tournament_id,function(error,isStarted){
+            if(error){
               res.end('error')
-          }
-          else {
-              if (isStarted != 0){
-                  res.json({"msg":true});
-              }
-              else {
-                  swiss.registerNewPlayer(user_id,tournament_id,player_name,function(error,x){
-                      if(error){
+            }
+            else {
+                if (isStarted != 0){
+                    console.log("kamalkamalkamalkamalkamal")
+                    res.json({"msg":"Player cann't be added once match starts"});
+                }
+                else {
+                    swiss.registerNewPlayer(user_id,tournament_id,player_name,function(error,x){
+                        if(error){
                           res.json({"msg":true})
-                      }
-                      else{
+                        }
+                        else{
                           //res.end('Player registered successfully!!');
                           res.json({"data":x});
-                      }
-                  })
-              }
-          }
-      })
+                        }
+                    })
+                }
+            }
+        })
     })
 
     app.post('/addExistingPlayer',isLoggedIn,function(req,res,next){
@@ -68,7 +69,7 @@ module.exports = function(app,passport) {
             else {
                 if (isStarted != 0){
                     console.log("ha ha ha ha ha ha ")
-                    res.json({"msg":true})
+                    res.json({"msg":"Player cann't be added once match starts"})
                 }
                 else {
                     swiss.registerExistingPlayer(user_id,tournament_id,player_name,function(error,x){
@@ -77,7 +78,7 @@ module.exports = function(app,passport) {
                         }
                         else{
                             //res.end('Player registered successfully!!');
-                            res.json({"data":x});
+                            res.json({"data":x,"msg":false});
                         }
                     })
                 }

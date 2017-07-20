@@ -128,7 +128,9 @@ $(function(){
         var name = $('.inputPname').val();
         var t_id = $('.hidden_id').val();
         if(name=='')
-            alert('Name required')
+            $btn_addPlayer.notify(
+                "Name Required",{ position:"top" }
+            );
         else{
             var data = {
             p_name :name,
@@ -141,7 +143,9 @@ $(function(){
                 success:function(data){
                     $('.inputPname').val('');
                     if(data.msg){
-                        alert("Can't add Player")
+                        $btn_addPlayer.notify(
+                          data.msg,{ position:"top" }
+                        );
                     }
                     else {
                         $(".round_table").css("display", "none");
@@ -169,7 +173,9 @@ $(function(){
             data : data,
             success:function(data){
                 if(data.msg){
-                    alert("Can't add player")
+                   $btn_addExPlayer.notify(
+                      data.msg,{ position:"bottom" }
+                    );
                 }
                 else {
                     $(".round_table").css("display", "none");
@@ -191,7 +197,9 @@ $(function(){
             url: '/canStartMatch/'+t_id,
             success: function(data){
                 if(data.msg){
-                    alert(data.msg)
+                    $btn_start.notify(
+                      data.msg,{ position:"left" }
+                    );
                 }
                 else{
                     start();
