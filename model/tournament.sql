@@ -1,14 +1,14 @@
 create table user (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id VARCHAR(100) NOT NULL PRIMARY KEY,
     name CHAR(20) NOT NULL,
-    user_name CHAR(20) NOT NULL UNIQUE,
+    user_name VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(200) NOT NULL
 
 );
 
 create table tournament (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    user_id VARCHAR(20) NOT NULL REFERENCES user(id)
+    user_id VARCHAR(100) NOT NULL REFERENCES user(id)
     ON DELETE CASCADE
         ON UPDATE CASCADE,
     name CHAR(20) NOT NULL,
@@ -20,7 +20,7 @@ create table tournament (
 create table player (
 	id INT NOT NULL AUTO_INCREMENT,
 	name CHAR(100),
-    user_id INT NOT NULL REFERENCES user(id),
+    user_id VARCHAR(100) NOT NULL REFERENCES user(id),
 	tournament_id INT NOT NULL REFERENCES tournament(id)
 	ON DELETE CASCADE
         ON UPDATE CASCADE,

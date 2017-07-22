@@ -47,6 +47,7 @@ $(function(){
                     if(roundsPlayed==roundsToBePlayed){
                         $('.round_table').show();
                         $('.winCup').show();
+                        $('.btn_start').toggleClass('btn-danger')
                         var winner = $('.standing').children("tr:first").children("th:first")[0].innerHTML
                         $('.btn_start').text("WINNER");
                         $('.winner_declare').html(winner).show();
@@ -95,6 +96,8 @@ $(function(){
             $('[data-id1='+max_round+']').attr('disabled', true);
             $('[data-id2='+max_round+']').attr('disabled', false);
             var winner = $('.standing').children("tr:first").children("th:first")[0].innerHTML
+            $('.btn_start').toggleClass('btn-danger')
+            //$('.btn_start').toggleClass('btn-success')
             $('.btn_start').html("Winner")
             $('.winCup').show();
             $('.winner_declare').html(winner).show();
@@ -128,7 +131,7 @@ $(function(){
         var name = $('.inputPname').val();
         var t_id = $('.hidden_id').val();
         if(name=='')
-            $btn_addPlayer.notify(
+            $('.inputPname').notify(
                 "Name Required",{ position:"top" }
             );
         else{
@@ -143,7 +146,7 @@ $(function(){
                 success:function(data){
                     $('.inputPname').val('');
                     if(data.msg){
-                        $btn_addPlayer.notify(
+                        $('.inputPname').notify(
                           data.msg,{ position:"top" }
                         );
                     }

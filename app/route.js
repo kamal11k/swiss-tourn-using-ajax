@@ -29,6 +29,32 @@ module.exports = function(app,passport) {
         failureFlash : true
     }));
 
+    app.get('/auth/google', passport.authenticate('google',
+    {
+        scope : 'email'
+    }
+    ));
+
+    app.get('/auth/google/callback',
+        passport.authenticate('google', {
+            successRedirect : '/viewTournament',
+            failureRedirect : '/'
+        }
+     ));
+
+    app.get('/auth/facebook', passport.authenticate('facebook',
+    {
+        scope : 'email'
+    }
+    ));
+
+    app.get('/auth/facebook/callback',
+        passport.authenticate('facebook', {
+            successRedirect : '/viewTournament',
+            failureRedirect : '/'
+        }
+     ));
+
     app.post('/addnewPlayer',isLoggedIn,function(req,res,next){
         var tournament_id = req.body.t_id;
         var player_name = req.body.p_name;
@@ -46,11 +72,11 @@ module.exports = function(app,passport) {
                 else {
                     swiss.registerNewPlayer(user_id,tournament_id,player_name,function(error,x){
                         if(error){
-                          res.json({"msg":true})
+                          res.json({"msg":"Player already exists"})
                         }
                         else{
                           //res.end('Player registered successfully!!');
-                          res.json({"data":x});
+                          res.json({"data":x,"msg":false});
                         }
                     })
                 }
