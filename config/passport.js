@@ -111,7 +111,7 @@ module.exports = function(passport) {
                         id : profile._json.id,
                         name : profile._json.name,
                         user_name : profile._json.email,
-                        password : 'lalalala',
+                        password : bcrypt.hashSync('secret_password', saltRounds),
                     }
                     var stmt = "Insert into user(id,user_name,name, password) values(?,?,?,?)";
                     connection.query(stmt, [newUser.id,newUser.user_name,newUser.name,newUser.password], function(error, result){
@@ -119,7 +119,7 @@ module.exports = function(passport) {
                             throw error;
                         else{
                             console.log(result, "useeeerlalallalala");
-                            return done(null, user);
+                            return done(null, newUser);
                         }
                     })
                 }
@@ -136,7 +136,6 @@ module.exports = function(passport) {
         function(accessToken, refreshToken, profile, done) {
             var stmt = "select * from user where user_name = ?";
             connection.query(stmt, [profile._json.emails[0].value], function(error, result){
-                console.log("inside kkkiioojfsf");
                 if(error)
                     throw error;
                 else if(result.length){
@@ -145,7 +144,7 @@ module.exports = function(passport) {
                 else{
                     var user = new Object();
                     user.user_name = profile._json.emails[0].value;
-                    user.password = 'lalalala';
+                    user.password = bcrypt.hashSync('secret_password', saltRounds);
                     user.id = profile._json.id;
                     console.log(profile._json.emails[0].value, "useeeer");
                     var stmt = "Insert into user(id,user_name, password) values(?,?,?)";
@@ -153,7 +152,6 @@ module.exports = function(passport) {
                         if(error)
                             throw error;
                         else{
-                            console.log(result, "Hiiiihkhgsdkjfh");
                             return done(null, user);
                         }
                     })
