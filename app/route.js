@@ -11,9 +11,12 @@ module.exports = function(app,passport) {
         res.render('index');
     });
 
+    app.get('/signup', function(req, res) {
+        res.render('signup')
+    });
 
     app.get('/logIn', function(req, res) {
-        res.render('logIn')
+        res.render('index')
     });
 
     app.post('/login', passport.authenticate('local-login', {
@@ -375,7 +378,7 @@ module.exports = function(app,passport) {
     app.get('/logout', function(req,res){
         req.session.destroy(function (err) {
         console.log("COOKIE DELETED");
-        res.render('logIn');
+        res.render('index');
         });
     });
 

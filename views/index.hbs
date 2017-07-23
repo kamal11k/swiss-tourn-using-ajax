@@ -4,23 +4,23 @@
   <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-  <header>
-    <h1>Welcome to Swiss Tournament</h1>
-  </header>
-  <form method='post' action="/signup">
-  <div class="container">
-    <label><b>Name</b></label>
-    <input class="index" type="text" placeholder="Enter Your Name" name="name" required>
+    <form method='post' action="/logIn">
+        <div class="container">
+            <label><b>Email</b></label>
+            <input class="index" type="email" placeholder="Enter email" name="user_name" required>
 
-    <label><b>Email</b></label>
-    <input class="index" type="email" placeholder="Enter email" name="user_name" required>
-
-    <label><b>Password</b></label>
-    <input class="index" type="password" placeholder="Enter Password" name="pswd" required>
-
-    <button class="indexButton" type="submit">Sign Up</button>
-  </div>
-</form>
-<a href="/logIn"> <button class='login' type="submit">Log In</button> </a>
+            <label><b>Password</b></label>
+            <input class="index" type="password" placeholder="Enter Password" name="pswd" required>
+            <button class="indexButton" type="submit">Login</button>
+        </div>
+    </form>
+    <div style="margin-left: 400px">
+        <a href="/auth/facebook"><img class="fb" style="height: 40px" src="fb.png"></a>
+        <img style="height: 40px;margin-left: 27px" src="or.jpg">
+        <a href="/auth/google"><img style="height: 46px;margin-left: 27px" src="google.png"></a>
+    </div>
+    <div style="margin-left: 610px">
+        <a href="signup"><h3>Create an account</h3></a>
+    </div>
 </body>
 </html>

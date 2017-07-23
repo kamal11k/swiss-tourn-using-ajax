@@ -19,6 +19,16 @@ input[class=input_tour], input[type=password] {
 input[class=hidden] {
     display: none;
 }
+
+.fb {
+    height: 40px;
+}
+.google {
+    height: 46px;
+}
+div .social {
+    display: inline-flex;
+}
 .winCup {
     height: 100px;
     width: 100px;
