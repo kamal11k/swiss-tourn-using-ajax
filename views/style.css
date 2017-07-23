@@ -29,6 +29,10 @@ input[class=hidden] {
 div .social {
     display: inline-flex;
 }
+
+p[class=alert] {
+    color: red;
+}
 .winCup {
     height: 100px;
     width: 100px;

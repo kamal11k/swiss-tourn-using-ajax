@@ -19,18 +19,66 @@ module.exports = function(app,passport) {
         res.render('index')
     });
 
-    app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/viewTournament',
-        failureRedirect : '/',
-        failureFlash : true
-    }));
+    // app.post('/login', passport.authenticate('local-login', {
+    //     successRedirect : '/viewTournament',
+    //     failureRedirect : '/',
+    //     failureFlash : true
+    // }));
+
+    app.post('/login', function(req, res, next) {
+        passport.authenticate('local-login', { failureFlash : true }, function(err, user, info) {
+            if (err) {
+                 res.status(500).send(JSON.stringify({
+                    'msg': "Internal Server Error"
+                }));
+            }
+            if (!user) {
+                return res.render('index', { message: req.flash('loginMessage') });
+            }
+            req.login(user, function(err) {
+                if (err) return next(err);
+                req.session.save(function(err) {
+                    if (!err) {
+                        return res.redirect('/viewTournament');
+                    }
+                    else {
+                        console.log('error occured during session save');
+                    }
+                });
+            });
+        })(req, res, next);
+    });
 
 
-    app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/logIn',
-        failureRedirect : '/',
-        failureFlash : true
-    }));
+    // app.post('/signup', passport.authenticate('local-signup', {
+    //     successRedirect : '/logIn',
+    //     failureRedirect : '/',
+    //     failureFlash : true
+    // }));
+
+    app.post('/signup', function(req, res, next) {
+        passport.authenticate('local-signup', { failureFlash : true }, function(err, user, info) {
+            if (err) {
+                 res.status(500).send(JSON.stringify({
+                    'msg': "Internal Server Error"
+                }));
+            }
+            if (!user) {
+               return res.render('signup', { message: req.flash('signupMessage') });
+            }
+            req.login(user, function(err) {
+                if (err) return next(err);
+                req.session.save(function(err) {
+                    if (!err) {
+                        return res.render('index', { msg: req.flash('signupMessage') });
+                    }
+                    else {
+                        console.log('error occured during session save');
+                    }
+                });
+            });
+        })(req, res, next);
+    });
 
     app.get('/auth/google', passport.authenticate('google',
     {

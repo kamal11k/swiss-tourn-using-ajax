@@ -9,6 +9,9 @@
   </header>
   <form method='post' action="/signup">
     <div class="container">
+      {{#if message}}
+        <p style="color: red"> {{message}}</p>
+      {{/if}}
       <label><b>Name</b></label>
       <input class="index" type="text" placeholder="Enter Your Name" name="name" required>
 

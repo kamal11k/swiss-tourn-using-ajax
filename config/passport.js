@@ -35,7 +35,7 @@ module.exports = function(passport) {
                 if (err)
                     return done(err);
                 if (rows.length) {
-                    return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
+                    return done(null, false, req.flash('signupMessage', 'The username has already been taken.'));
                 } else {
                     var date = new Date();
                     var components = [
@@ -59,7 +59,7 @@ module.exports = function(passport) {
 
                     connection.query(insertQuery,[newUser.id,newUser.user_name,newUser.name,newUser.password],function(err, rows) {
 
-                        return done(null, newUser);
+                        return done(null, newUser, req.flash('signupMessage', 'Registration successful!! Log in to continue'));
                     });
                 }
             });
@@ -81,10 +81,10 @@ module.exports = function(passport) {
                 if (err)
                     return done(err);
                 if (!rows.length) {
-                    return done(null, false);
+                    return done(null, false, req.flash('loginMessage', 'No user found.'));
                 }
                 if (!bcrypt.compareSync(pswd, rows[0].password))
-                    return done(null, false);
+                    return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
                 return done(null, rows[0]);
             });
         })
