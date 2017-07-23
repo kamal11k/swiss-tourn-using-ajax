@@ -1,0 +1,171 @@
+input[class=input_tour], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.index {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+input[class=hidden] {
+    display: none;
+}
+.winCup {
+    height: 100px;
+    width: 100px;
+    float: right;
+    margin-top: 10px;
+    display: none;
+}
+h4 {
+    color: #034175;
+}
+.round_table {
+    margin-top: 15px;
+}
+.indexButton {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+header {
+    text-align: center;
+    color: #6395b9;
+    margin-bottom: 50px;
+}
+
+section {
+    margin-bottom: 50px;
+}
+.input-group-btn {
+    margin-top: 20px;
+}
+
+button[class=createTour] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+li {
+    background-color: #409cbf;
+    color: white;
+    padding: 5px 5px;
+    margin: 8px 10px;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+button[class=logout] {
+    background-color: #d2507a;
+    color: white;
+    border: none;
+    cursor: pointer;
+    float: right;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    width: 100px;
+}
+.winner_declare{
+    display: none;
+    float: left;
+    color: red;
+}
+
+.btn_start {
+    margin-top: 20px;
+    float: left;
+    margin-right: 60px;
+}
+
+.logOut{
+    background-color: #6cccd6;
+}
+
+.tour_table, .round_table {
+    display: none;
+}
+
+.message {
+    display: none;
+    text-align: center;
+    color: red;
+}
+
+.fixture {
+
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    /*top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);*/
+}
+
+input[class=player] {
+    width: 50%;
+    padding: 12px 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+input[name=p_name]{
+    width: 75%;
+    margin-left: 30px;
+
+}
+.login {
+    margin-left: 400px;
+    cursor: pointer;
+    width: 550px;
+    color: white;
+    background-color: #9a618d;
+    height: 40px;
+    font-size: 15px;
+}
+.main  {
+    margin: 0px 20px;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.user_logo {
+    height: 15px;
+    width: 30px;
+    margin-left: 10px;
+
+}
+.container {
+    padding-left: 400px;
+    padding-right: 400px;
+    padding-top: 100px;
+}
+span.psw {
+    float: right;
+    padding-top: 16px;
+}

@@ -37,16 +37,29 @@ module.exports = function(passport) {
                 if (rows.length) {
                     return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
                 } else {
-                    var newUserMysql = {
-                        username: user_name,
+                    var date = new Date();
+                    var components = [
+                        date.getYear(),
+                        date.getMonth(),
+                        date.getDate(),
+                        date.getHours(),
+                        date.getMinutes(),
+                        date.getSeconds(),
+                        date.getMilliseconds()
+                    ];
+                    var id = components.join("");
+                    var name = req.body.name;
+                    var newUser = {
+                        id,
+                        user_name,
+                        name,
                         password: bcrypt.hashSync(pswd, saltRounds)
                     };
-                    var insertQuery = "INSERT INTO user ( user_name, password ) values (?,?)";
+                    var insertQuery = "INSERT INTO user ( id,user_name,name, password ) values (?,?,?,?)";
 
-                    connection.query(insertQuery,[newUserMysql.username, newUserMysql.password],function(err, rows) {
-                        newUserMysql.id = rows.insertId;
+                    connection.query(insertQuery,[newUser.id,newUser.user_name,newUser.name,newUser.password],function(err, rows) {
 
-                        return done(null, newUserMysql);
+                        return done(null, newUser);
                     });
                 }
             });
@@ -94,23 +107,22 @@ module.exports = function(passport) {
                     return done(null, result[0]);
                 }
                 else{
-                        console.log(profile._json.email, "email");
-                        var user = new Object();
-                        user.name = profile._json.name
-                        user.email = profile._json.email;
-                        user.password = 'lalalala';
-                        user.id = profile._json.id;
-                        console.log(profile._json, "useeeer");
-                        var stmt = "Insert into user(id,user_name,name, password) values(?,?,?,?)";
-                        connection.query(stmt, [user.id,user.email,user.name,user.password], function(error, result){
-                            if(error)
-                                throw error;
-                            else{
-                                console.log(result, "useeeerlalallalala");
-                                return done(null, user);
-                            }
-                        })
+                    var newUser = {
+                        id : profile._json.id,
+                        name : profile._json.name,
+                        user_name : profile._json.email,
+                        password : 'lalalala',
                     }
+                    var stmt = "Insert into user(id,user_name,name, password) values(?,?,?,?)";
+                    connection.query(stmt, [newUser.id,newUser.user_name,newUser.name,newUser.password], function(error, result){
+                        if(error)
+                            throw error;
+                        else{
+                            console.log(result, "useeeerlalallalala");
+                            return done(null, user);
+                        }
+                    })
+                }
             });
         }
     ));
@@ -131,22 +143,21 @@ module.exports = function(passport) {
                     return done(null, result[0]);
                 }
                 else{
-                        console.log(profile._json.email, "email");
-                        var user = new Object();
-                        user.user_name = profile._json.emails[0].value;
-                        user.password = '308ab220';
-                        user.id = profile._json.id;
-                        console.log(profile._json.emails[0].value, "useeeer");
-                        var stmt = "Insert into user(id,user_name, password) values(?,?, ?)";
-                        connection.query(stmt, [user.id,user.user_name, user.password], function(error, result){
-                            if(error)
-                                throw error;
-                            else{
-                                console.log(result, "Hiiiihkhgsdkjfh");
-                                return done(null, user);
-                            }
-                        })
-                    }
+                    var user = new Object();
+                    user.user_name = profile._json.emails[0].value;
+                    user.password = 'lalalala';
+                    user.id = profile._json.id;
+                    console.log(profile._json.emails[0].value, "useeeer");
+                    var stmt = "Insert into user(id,user_name, password) values(?,?,?)";
+                    connection.query(stmt, [user.id,user.user_name,user.password], function(error, result){
+                        if(error)
+                            throw error;
+                        else{
+                            console.log(result, "Hiiiihkhgsdkjfh");
+                            return done(null, user);
+                        }
+                    })
+                }
             });
         }
     ));
