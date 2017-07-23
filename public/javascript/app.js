@@ -54,6 +54,12 @@ $(function(){
                         $('.btn_start').attr('disabled' , true);
                     }
                 }
+            },
+            error: function(error){
+                $.notify(
+                    "Please try again",
+                    { globalPosition: 'top center', autoHideDelay: 10000}
+                );
             }
         })
 
@@ -86,7 +92,16 @@ $(function(){
             data:data,
             url: '/setWinner',
             success: function(data){
-
+                $.notify(
+                    "Winner declared","success",
+                    { globalPosition: 'top center', autoHideDelay: 10000}
+                );
+            },
+            error: function(error){
+                $.notify(
+                    "Error in declaring winner","error",
+                    { globalPosition: 'top center', autoHideDelay: 10000}
+                );
             }
         })
     }
@@ -123,6 +138,12 @@ $(function(){
 
                     $('.standing').append(row);
                 })
+            },
+            error: function(error){
+                $.notify(
+                    "Error in showing playerstanding","error",
+                    { globalPosition: 'top center', autoHideDelay: 10000}
+                );
             }
         })
     }
@@ -158,7 +179,13 @@ $(function(){
                         existingPlayers(data.data);
                         playerStanding();
                     }
-                }
+                },
+                error: function(error){
+                $.notify(
+                    "Error in adding player","error",
+                    { globalPosition: 'top center', autoHideDelay: 10000}
+                );
+            }
             })
         }
     })
@@ -189,6 +216,12 @@ $(function(){
                     playerStanding();
                     checkExistings();
                 }
+            },
+            error: function(error){
+                $.notify(
+                    "Error in Adding player","error",
+                    { globalPosition: 'top center', autoHideDelay: 10000}
+                );
             }
         })
     })
@@ -209,6 +242,12 @@ $(function(){
                     $('.btn_start').attr('disabled',true);
                     $('.round_table').show();
                 }
+            },
+            error: function(error){
+                $.notify(
+                    "Error starting match","error",
+                    { globalPosition: 'top center', autoHideDelay: 10000}
+                );
             }
 
         })
@@ -245,6 +284,12 @@ $(function(){
                     `
                     $('#mt_body').append(row);
                 })
+            },
+            error: function(error){
+                $.notify(
+                    "Error in opening modal","error",
+                    { globalPosition: 'top center', autoHideDelay: 10000}
+                );
             }
         })
     })
@@ -282,6 +327,12 @@ $(function(){
                         disableButtons(t_id,data.count,data.max_round.max_round);
                     }
                 })
+            },
+            error: function(error){
+                $.notify(
+                    "Error in reporting match","error",
+                    { globalPosition: 'top center', autoHideDelay: 10000}
+                );
             }
         })
     })
@@ -306,21 +357,13 @@ $(function(){
                     `
                     $('#mt_body2').append(row);
                 })
-
+            },
+            error: function(error){
+                $.notify(
+                    "Error in executing round","error",
+                    { globalPosition: 'top center', autoHideDelay: 10000}
+                );
             }
         })
     })
-
-    // $('.logout').on('click',function(){
-    //     $.ajax({
-    //         method:'GET',
-    //         url:'/logout',
-    //         success: function(data){
-    //             alert("he he");
-    //         }
-    //     })
-    // })
-
-
-
 })

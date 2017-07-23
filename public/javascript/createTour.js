@@ -10,6 +10,12 @@ $(function(){
                      $('.tour_table').show()
                  else
                     $('.message').show()
+            },
+            error: function(error){
+                $.notify(
+                    "Error in showing tournaments","error",
+                    { globalPosition: 'top center', autoHideDelay: 10000}
+                );
             }
         })
     }
@@ -44,9 +50,18 @@ $(function(){
                         var html =
                                 "<tr><th><a class='tour' href='/individualTournament/"+id+"'>\
                                 "+name+"</a></td><td>Not Started</td><td>Not declared</td></tr>"
-                        $('tbody').append(html)
+                        $('tbody').append(html);
+                        $('.user_logo').notify(
+                            "Tournament created successfully","success"
+                        );
                     }
-                }
+                },
+                error: function(error){
+                $.notify(
+                    "Error in tournament creation","error",
+                    { globalPosition: 'top center', autoHideDelay: 10000}
+                );
+            }
             })
         }
     })
