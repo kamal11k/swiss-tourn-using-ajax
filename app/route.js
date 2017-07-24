@@ -19,12 +19,6 @@ module.exports = function(app,passport) {
         res.render('index')
     });
 
-    // app.post('/login', passport.authenticate('local-login', {
-    //     successRedirect : '/viewTournament',
-    //     failureRedirect : '/',
-    //     failureFlash : true
-    // }));
-
     app.post('/login', function(req, res, next) {
         passport.authenticate('local-login', { failureFlash : true }, function(err, user, info) {
             if (err) {
@@ -48,13 +42,6 @@ module.exports = function(app,passport) {
             });
         })(req, res, next);
     });
-
-
-    // app.post('/signup', passport.authenticate('local-signup', {
-    //     successRedirect : '/logIn',
-    //     failureRedirect : '/',
-    //     failureFlash : true
-    // }));
 
     app.post('/signup', function(req, res, next) {
         passport.authenticate('local-signup', { failureFlash : true }, function(err, user, info) {
@@ -81,9 +68,9 @@ module.exports = function(app,passport) {
     });
 
     app.get('/auth/google', passport.authenticate('google',
-    {
-        scope : 'email'
-    }
+        {
+            scope : 'email'
+        }
     ));
 
     app.get('/auth/google/callback',
@@ -91,12 +78,12 @@ module.exports = function(app,passport) {
             successRedirect : '/viewTournament',
             failureRedirect : '/'
         }
-     ));
+    ));
 
     app.get('/auth/facebook', passport.authenticate('facebook',
-    {
-        scope : 'email'
-    }
+        {
+            scope : 'email'
+        }
     ));
 
     app.get('/auth/facebook/callback',
@@ -104,7 +91,7 @@ module.exports = function(app,passport) {
             successRedirect : '/viewTournament',
             failureRedirect : '/'
         }
-     ));
+    ));
 
     app.post('/addnewPlayer',isLoggedIn,function(req,res,next){
         var tournament_id = req.body.t_id;
@@ -117,17 +104,15 @@ module.exports = function(app,passport) {
             }
             else {
                 if (isStarted != 0){
-                    console.log("kamalkamalkamalkamalkamal")
                     res.json({"msg":"Player cann't be added once match starts"});
                 }
                 else {
                     swiss.registerNewPlayer(user_id,tournament_id,player_name,function(error,x){
                         if(error){
-                          res.json({"msg":"Player already exists"})
+                            res.json({"msg":"Player already exists"})
                         }
                         else{
-                          //res.end('Player registered successfully!!');
-                          res.json({"data":x,"msg":false});
+                            res.json({"data":x,"msg":false});
                         }
                     })
                 }
@@ -145,16 +130,14 @@ module.exports = function(app,passport) {
             }
             else {
                 if (isStarted != 0){
-                    console.log("ha ha ha ha ha ha ")
                     res.json({"msg":"Player cann't be added once match starts"})
                 }
                 else {
                     swiss.registerExistingPlayer(user_id,tournament_id,player_name,function(error,x){
                         if(error){
-                            res.end('Registration failure');
+                            res.json({"msg":"Error in adding player"});
                         }
                         else{
-                            //res.end('Player registered successfully!!');
                             res.json({"data":x,"msg":false});
                         }
                     })
@@ -166,14 +149,11 @@ module.exports = function(app,passport) {
     app.get('/canStartMatch/:t_id',function(req,res,next){
         var t_id = req.params.t_id;
         swiss.countPlayers(t_id,function(error,count){
-            console.log(count,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab");
             if(error){
-                console.log('he he !! error')
+                res.json({"msg":"Error in counting player"});
             }
             else {
-                console.log(count,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab");
                 if(!(Math.log2(count)%1==0) || count==1){
-                    console.log(count,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                     res.json({"msg":'No. of players should be power of 2.  example- 2, 4, 8, 16 etc'});
                 }
                 else {
@@ -183,20 +163,9 @@ module.exports = function(app,passport) {
         })
     })
 
-    // app.post('/register',function(req,res,next){
-    //     req.body.hash = bcrypt.hashSync(req.body.pswd, saltRounds)
-    //     swiss.registerUser(req.body,function(error,x){
-    //         if(error)
-    //             res.end('Registration failure');
-    //         else
-    //             res.sendFile(path.join(__dirname + '/views/RelogIn.html'));
-    //     })
-    // })
-
     app.post('/createTournament',isLoggedIn,function(req,res,next){
         var user_id = req.session.passport.user;
         var t_name = req.body.t_name;
-        console.log(user_id,t_name);
         swiss.createTournament(user_id,t_name,function(error,x){
             if(error)
                 res.json({"msg":"Tournament alredy exists"})
@@ -211,15 +180,14 @@ module.exports = function(app,passport) {
         var winner = req.body.winner;
         swiss.setWinner(t_id,winner,function(error,x){
             if(error)
-                res.end('Unsuccessfull');
+                res.json({"msg":"Error in inserting winner"});
             else {
-                res.json({data:x});
+                res.json({data:x,msg:false});
             }
         })
     })
 
     app.get('/hasTournaments',isLoggedIn,function(req,res,next){
-        console.log("hello");
         var user_id = req.session.passport.user;
         swiss.hasTournaments(user_id,function(error,count){
             if(count==0)
@@ -231,12 +199,10 @@ module.exports = function(app,passport) {
     })
 
     app.get('/viewTournament',isLoggedIn,function(req,res,next){
-        console.log("hello");
         var user_id = req.session.passport.user;
-        console.log(user_id)
         swiss.viewTournament(user_id,function(error,tournaments){
             if(error)
-                res.end('Unsuccessfull');
+                res.json({"msg":"Error in adding player"});
             else{
                 res.render('createTournament.hbs',{
                     "data":tournaments
@@ -249,23 +215,22 @@ module.exports = function(app,passport) {
         var tournament_id = req.params.t_id;
         swiss.countPlayers(tournament_id,function(error,count){
             if(error)
-                res.end('Error occured');
+                res.json({"msg":"Error in counting player"});
             else{
                 swiss.getMaxRound(tournament_id,function(error,max_round){
                     if(error){
-
+                        res.json({"msg":"Error in getting max_round"});
                     }
                     else{
-                        console.log(count,max_round)
                         res.json({
                             "count":count,
-                            "max_round":max_round
+                            "max_round":max_round,
+                            "msg":false
                         })
                     }
                 })
             }
         })
-
     })
 
     app.get('/individualTournament/:t_id',isLoggedIn,function(req,res,next){
@@ -273,16 +238,16 @@ module.exports = function(app,passport) {
         var user_id = req.session.passport.user;
         swiss.seePlayers(tournament_id,function(error,data){
             if(error)
-                res.end('No players present');
+                res.json({"msg":"No players present"});
             else{
                 swiss.existingPlayers(user_id,tournament_id,function(error,results){
                     if(error){
-                        res.end('error')
+                        res.json({"msg":"Error in showing player"});
                     }
                     else{
                         swiss.playerStandings(tournament_id,function(error,result){
                             if(error)
-                                res.end('Error');
+                                res.json({"msg":"Error in getting playerstanding"});
                             else{
                                 swiss.getTournament(tournament_id,function(error,tour){
                                     //res.json(data);
@@ -291,17 +256,15 @@ module.exports = function(app,passport) {
                                                                 "players":data,
                                                                 "ex_players":results,
                                                                 "standing":result
-                                                                })
+                                                                }
+                                    )
                                 })
                             }
-
                         })
                     }
                 })
             }
-
         })
-        //res.render('tournamentMenu.ejs',{"t_id":tournament_id})
     })
 
 
@@ -311,24 +274,23 @@ module.exports = function(app,passport) {
         roundInfo.forEach(function(match){
             swiss.reportMatch(t_id,match.round,match.winner_id,match.loser_id,function(error,res){
                 if(error){
-                    // res.json({"msg":"error"})
+                    res.json({"msg":"error in swiss pairing"})
                 }
                 else {
-
+                    res.json({"msg":"successfully paired"})
                 }
             })
         })
         swiss.countPlayers(t_id,function(err,count){
             if(err){
-
+                res.json({"msg":"error in counting player"})
             }
             else {
                 swiss.setStatus(t_id,count,roundInfo[0].round,function(error,status){
                     if(error){
-
+                        res.json({"msg":"error in setting tournament status"})
                     }
                     else{
-                        console.log(status);
                         res.json({
                             "count":count,
                             "round":roundInfo[0].round,
@@ -338,34 +300,32 @@ module.exports = function(app,passport) {
                 })
             }
         })
-
     })
 
     app.get('/Start/:t_id',isLoggedIn,function(req,res,next){
         var tournament_id = req.params.t_id;
         swiss.countPlayers(tournament_id,function(error,count){
-            console.log(count,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab");
             if(error){
-                console.log('he he !! error')
+                res.json({"msg":"error in counting player"})
             }
             else {
-                console.log(count,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab");
                 if(!(Math.log2(count)%1==0) || count==1){
-                    console.log(count,"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                     res.json({"msg":'No. of players should be power of 2.  example- 2, 4, 8, 16 etc'});
                 }
                 else {
                     swiss.getMaxRound(tournament_id,function(error,max_round){
                         if(error){
-
+                            res.json({"msg":"error in getting max round"})
                         }
                         else{
                             swiss.getRoundStatus(tournament_id,count,function(error,status){
-                                res.json({  "count":count,
-                                            "status":status,
-                                            "max_round":max_round,
-                                            "msg":false
-                                          })
+                                res.json({
+                                        "count":count,
+                                        "status":status,
+                                        "max_round":max_round,
+                                        "msg":false
+                                    }
+                                )
                             })
                         }
                     })
@@ -378,11 +338,10 @@ module.exports = function(app,passport) {
         var tournament_id = req.params.t_id;
         swiss.playerStandings(tournament_id,function(error,data){
             if(error)
-                res.end('Error');
+                res.json({"msg":"error in showing standing"})
             else{
                 res.json(data);
             }
-
         })
     });
 
@@ -391,11 +350,10 @@ module.exports = function(app,passport) {
         var tournament_id = req.params.info.split('.')[1];
         swiss.swissPairings(tournament_id,function(error,data){
             if(error)
-                res.end('Error');
+                res.json({"msg":"error in getting fixture"})
             else{
                 res.json({"pairs":data});
             }
-
         })
     });
 
@@ -404,7 +362,7 @@ module.exports = function(app,passport) {
         var tournament_id = req.params.info.split('.')[1];
         swiss.getroundResult(tournament_id,round,function(err,result){
             if(err){
-
+                res.json({"msg":"error in getting round result"})
             }
             else{
                 res.json({"data":result})
@@ -412,31 +370,18 @@ module.exports = function(app,passport) {
         })
     })
 
-
-
-    // function isLoggedIn(req, res, next){
-    //     if(req.session.passport.user){
-    //         next();     //If session exists, proceed to page
-    //     }
-    //     else {
-    //         res.status(404).send('You are not allowed to access')
-    //     }
-    // }
-
     app.get('/logout', function(req,res){
         req.session.destroy(function (err) {
-        console.log("COOKIE DELETED");
         res.render('index');
         });
     });
-
-
 }
-  function isLoggedIn(req,res,next){
+
+function isLoggedIn(req,res,next){
     if(req.isAuthenticated()){
       return next();
     }
     else {
       res.redirect('/');
     }
-  }
+}

@@ -15,7 +15,6 @@ module.exports = function(passport) {
     });
 
     passport.deserializeUser(function(id, done) {
-        console.log(id, "jdkajdk");
         connection.query("SELECT * FROM user WHERE id = ? ",[id], function(err, rows){
             done(err, rows[0]);
         });
@@ -76,7 +75,6 @@ module.exports = function(passport) {
             passReqToCallback : true
         },
         function(req, user_name, pswd, done) {
-            console.log("asuchi be")
             connection.query("SELECT * FROM user WHERE user_name = ?",[user_name], function(err, rows){
                 if (err)
                     return done(err);
@@ -97,10 +95,8 @@ module.exports = function(passport) {
         profileFields: ['id', 'displayName', 'photos', 'email']
     },
         function(accessToken, refreshToken, profile, done) {
-            console.log("inside facebook auth", profile._json.email);
             var stmt = "select * from user where user_name = ?";
             connection.query(stmt, [profile._json.email], function(error, result){
-                console.log("are eita facebook re");
                 if(error)
                     throw error;
                 else if(result.length > 0){
@@ -118,7 +114,6 @@ module.exports = function(passport) {
                         if(error)
                             throw error;
                         else{
-                            console.log(result, "useeeerlalallalala");
                             return done(null, newUser);
                         }
                     })
@@ -146,7 +141,6 @@ module.exports = function(passport) {
                     user.user_name = profile._json.emails[0].value;
                     user.password = bcrypt.hashSync('secret_password', saltRounds);
                     user.id = profile._json.id;
-                    console.log(profile._json.emails[0].value, "useeeer");
                     var stmt = "Insert into user(id,user_name, password) values(?,?,?)";
                     connection.query(stmt, [user.id,user.user_name,user.password], function(error, result){
                         if(error)

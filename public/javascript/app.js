@@ -75,7 +75,6 @@ $(function(){
 
 
     function existingPlayers(Players){
-        //console.log(Players)
         $('.selectpicker').html('')
         Players.forEach(function(player){
             $('.selectpicker').append("<option>"+player.name+"</option>")
@@ -175,7 +174,6 @@ $(function(){
                         $(".round_table").css("display", "none");
                         $('.btn_start').attr('disabled',false);
                         $('.Players').append("<li>"+name+"</li>");
-                        console.log(data);
                         existingPlayers(data.data);
                         playerStanding();
                     }
@@ -211,7 +209,6 @@ $(function(){
                     $(".round_table").css("display", "none");
                     $('.btn_start').attr('disabled',false);
                     $('.Players').append("<li>"+name+"</li>");
-                    console.log(data,'llll');
                     existingPlayers(data.data);
                     playerStanding();
                     checkExistings();
@@ -258,7 +255,6 @@ $(function(){
         var round = $(target).attr('data-id1');
         var t_id = $('.hidden_id').val();
         event.stopPropagation();
-        //console.log(round);
         $.ajax({
             method: 'GET',
             url: '/getFixture/'+round+'.'+t_id,
