@@ -272,13 +272,7 @@ module.exports = function(app,passport) {
         var t_id = req.body.t_id;
         var roundInfo = req.body.roundDetails;
         roundInfo.forEach(function(match){
-            swiss.reportMatch(t_id,match.round,match.winner_id,match.loser_id,function(error,res){
-                if(error){
-                    res.json({"msg":"error in swiss pairing"})
-                }
-                else {
-                    res.json({"msg":"successfully paired"})
-                }
+            swiss.reportMatch(t_id,match.round,match.winner_id,match.loser_id,function(error,results){
             })
         })
         swiss.countPlayers(t_id,function(err,count){
