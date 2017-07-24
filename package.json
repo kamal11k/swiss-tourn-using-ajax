@@ -17,14 +17,15 @@
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^1.0.0",
     "passport-local": "^1.0.0",
+    "request": "^2.81.0",
     "session-file-store": "^1.0.0",
     "yargs": "^8.0.2"
   },
   "devDependencies": {
-    "jasmine-node": "^1.14.5"
+    "jasmine": "^2.6.0"
   },
   "scripts": {
-    "test": "./node_modules/.bin/jasmine-node --verbose spec/",
+    "test": "./node_modules/.bin/jasmine",
     "start": "node server.js"
   },
   "author": "",
